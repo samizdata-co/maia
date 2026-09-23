@@ -31,9 +31,9 @@ pnpm build
 
 {% endif %}## SAMIZDATA report styling
 
-- This template includes `brand.yml` and PDF styling hooks for Quarto.
-- PDF reports use SAMIZDATA colors and typography by default.
-- `logo.png` is already included at project root and used in PDF output.
+- This project includes the pinned SAMIZDATA Quarto Brand Extension under `_extensions/`.
+- PDF reports use the same Space Grotesk and Work Sans families from vendored files in `fonts/`.
+- `samizdata-pdf.tex` and `samizdata-before-body.tex` contain only PDF delivery and composition overrides.
 
 ## Tracking time
 

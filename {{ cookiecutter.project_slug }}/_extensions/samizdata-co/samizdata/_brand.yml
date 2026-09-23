@@ -1,0 +1,174 @@
+meta:
+  name:
+    full: SAMIZDATA
+    short: SAMIZDATA
+  link:
+    home: https://samizdata.co
+  description: |
+    Shared identity for SAMIZDATA's editorial data journalism, research,
+    visualisation, interactive tools, and training.
+
+logo:
+  images:
+    mark-light:
+      path: assets/logos/mark.svg
+      alt: "SAMIZDATA mark: three horizontal data bars"
+    mark-dark:
+      path: assets/logos/mark-dark.svg
+      alt: "SAMIZDATA mark: three horizontal data bars"
+    mark-raster:
+      path: assets/logos/mark-512.png
+      alt: "SAMIZDATA mark: three horizontal data bars"
+  small:
+    light: mark-light
+    dark: mark-dark
+  medium:
+    light: mark-light
+    dark: mark-dark
+  large:
+    light: mark-light
+    dark: mark-dark
+
+color:
+  palette:
+    primary-light: "#7B003C"
+    primary-dark: "#A31552"
+    primary-container-light: "#9F1853"
+    primary-container-dark: "#C62168"
+    accent-text-light: "#7B003C"
+    accent-text-dark: "#F078A6"
+    accent-text-hover-light: "#9F1853"
+    accent-text-hover-dark: "#FF9BC1"
+    logo-mark-light: "#7B003C"
+    logo-mark-dark: "#D14A7B"
+    surface-light: "#FBF9F4"
+    surface-dark: "#111311"
+    surface-low-light: "#F5F3EE"
+    surface-low-dark: "#171A18"
+    surface-container-light: "#F0EEE9"
+    surface-container-dark: "#1F211F"
+    surface-high-light: "#EAE8E3"
+    surface-high-dark: "#2A2C29"
+    surface-highest-light: "#E4E2DD"
+    surface-highest-dark: "#353733"
+    surface-lowest-light: "#FFFFFF"
+    surface-lowest-dark: "#1B1F1C"
+    surface-dim-light: "#DBDAD5"
+    surface-dim-dark: "#0C0E0D"
+    ink-light: "#1B1C19"
+    ink-dark: "#F4EFE9"
+    muted-light: "#574146"
+    muted-dark: "#C2B7B3"
+    ink-soft-light: "rgba(27, 28, 25, 0.72)"
+    ink-soft-dark: "rgba(244, 239, 233, 0.76)"
+    outline-light: "rgba(138, 112, 118, 0.3)"
+    outline-dark: "rgba(160, 140, 144, 0.24)"
+    outline-ghost-light: "rgba(222, 191, 197, 0.2)"
+    outline-ghost-dark: "rgba(255, 255, 255, 0.1)"
+    border-soft-light: "rgba(138, 112, 118, 0.18)"
+    border-soft-dark: "rgba(255, 255, 255, 0.11)"
+    border-strong-light: "rgba(138, 112, 118, 0.28)"
+    border-strong-dark: "rgba(255, 255, 255, 0.18)"
+    border-accent-light: "rgba(159, 24, 83, 0.26)"
+    border-accent-dark: "rgba(198, 33, 104, 0.4)"
+    primary-glow-light: "rgba(123, 0, 60, 0.1)"
+    primary-glow-dark: "rgba(198, 33, 104, 0.16)"
+    destructive-light: "#C0476B"
+    destructive-dark: "#D06B8C"
+    destructive-text-light: "#A52F56"
+    destructive-text-dark: "#E98BAB"
+    on-primary-light: "#FFFFFF"
+    on-primary-dark: "#FFFFFF"
+    on-destructive-light: "#FFFFFF"
+    on-destructive-dark: "#111311"
+    white: "#FFFFFF"
+
+  foreground:
+    light: muted-light
+    dark: muted-dark
+  background:
+    light: surface-light
+    dark: surface-dark
+  primary:
+    light: primary-container-light
+    dark: primary-container-dark
+  secondary:
+    light: surface-low-light
+    dark: surface-low-dark
+  tertiary:
+    light: surface-high-light
+    dark: surface-high-dark
+  danger:
+    light: destructive-text-light
+    dark: destructive-text-dark
+  light:
+    light: surface-lowest-light
+    dark: surface-lowest-dark
+  dark:
+    light: surface-dim-light
+    dark: surface-dim-dark
+
+typography:
+  fonts:
+    - family: Space Grotesk
+      source: bunny
+      weight: [700, 900]
+      style: normal
+      display: swap
+    - family: Work Sans
+      source: bunny
+      weight: [400, 500]
+      style: normal
+      display: swap
+
+  base:
+    family: Work Sans
+    weight: 400
+    line-height: 1.6
+
+  headings:
+    family: Space Grotesk
+    weight: 900
+    line-height: 0.95
+    color:
+      light: ink-light
+      dark: ink-dark
+
+  link:
+    weight: 500
+    color:
+      light: accent-text-light
+      dark: accent-text-dark
+    decoration: underline
+
+  monospace-inline:
+    background-color:
+      light: surface-container-light
+      dark: surface-container-dark
+    color:
+      light: ink-light
+      dark: ink-dark
+
+  monospace-block:
+    line-height: 1.5
+    background-color:
+      light: surface-container-light
+      dark: surface-container-dark
+    color:
+      light: ink-light
+      dark: ink-dark
+
+defaults:
+  bootstrap:
+    defaults:
+      enable-rounded: false
+      border-radius: 0
+      border-radius-sm: 0
+      border-radius-lg: 0
+      link-decoration: underline
+      link-hover-decoration: underline
+      focus-ring-width: 0.125rem
+      focus-ring-opacity: 1
+      focus-ring-color: $brand-accent-text-light
+      headings-font-weight: 900
+      headings-line-height: 0.95

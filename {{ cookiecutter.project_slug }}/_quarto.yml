@@ -2,8 +2,7 @@ project:
   output-dir: output
   execute-dir: project
 
-brand: _brand.yml
-
+# The pinned extension in _extensions/samizdata-co/samizdata supplies the brand.
 execute:
   cache: true
 
@@ -34,8 +33,5 @@ format:
     linkcolor: samizdataaccent
     urlcolor: samizdataaccent
     citecolor: samizdatainfo
-    mainfont: Roboto
-    sansfont: Roboto
-    monofont: Roboto Mono
     include-in-header: samizdata-pdf.tex
     include-before-body: samizdata-before-body.tex

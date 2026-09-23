@@ -34,6 +34,18 @@ class GenerationTests(unittest.TestCase):
         self.assertFalse((project / 'visuals').exists())
         self.assertFalse((project / 'package.json').exists())
 
+    def test_project_vendors_single_pinned_brand(self):
+        project = self.generate('None')
+        extension = project / '_extensions/samizdata-co/samizdata'
+        self.assertTrue((extension / '_brand.yml').is_file())
+        self.assertTrue((extension / 'assets/logos/mark.svg').is_file())
+        self.assertFalse((project / '_brand.yml').exists())
+        self.assertIn('version: 0.1.0', (extension / '_extension.yml').read_text())
+        quarto = (project / '_quarto.yml').read_text()
+        self.assertNotIn('brand: _brand.yml', quarto)
+        self.assertTrue((project / 'fonts/SpaceGrotesk-Variable.ttf').is_file())
+        self.assertTrue((project / 'fonts/WorkSans-Variable.ttf').is_file())
+
     def test_interactive_generates_allowlisted_workspace(self):
         project = self.generate('Svelte + Layer Cake')
         visuals = project / 'visuals'

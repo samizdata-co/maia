@@ -1,37 +1,55 @@
+% PDF delivery overrides: LuaLaTeX cannot obtain Bunny-hosted fonts, so use
+% the vendored copies of the same Space Grotesk and Work Sans families.
 \usepackage{xcolor}
 \usepackage{graphicx}
 \usepackage{titlesec}
 \usepackage[automark]{scrlayer-scrpage}
 
+\setmainfont{Work Sans}[
+  Path=fonts/,
+  UprightFont=WorkSans-Variable.ttf,
+  ItalicFont=WorkSans-Italic-Variable.ttf
+]
+\setsansfont{Work Sans}[
+  Path=fonts/,
+  UprightFont=WorkSans-Variable.ttf,
+  ItalicFont=WorkSans-Italic-Variable.ttf
+]
+\newfontfamily\samizdatadisplay{Space Grotesk}[
+  Path=fonts/,
+  UprightFont=SpaceGrotesk-Variable.ttf
+]
+
 \definecolor{samizdataaccent}{HTML}{9F1853}
-\definecolor{samizdatainfo}{HTML}{0F62FE}
-\definecolor{samizdatatext}{HTML}{161616}
-\definecolor{samizdatabg}{HTML}{FAF9F6}
+\definecolor{samizdatainfo}{HTML}{7B003C}
+\definecolor{samizdatatext}{HTML}{574146}
+\definecolor{samizdataink}{HTML}{1B1C19}
+\definecolor{samizdatabg}{HTML}{FBF9F4}
 
 \AtBeginDocument{\color{samizdatatext}}
 \pagecolor{samizdatabg}
 
 \clearpairofpagestyles
-\ihead{\IfFileExists{logo.png}{\includegraphics[height=0.7cm]{logo.png}}{\small\textcolor{samizdataaccent}{SAMIZDATA}}}
-\ohead{\small\color{samizdataaccent}\headmark}
-\cfoot{\small\color{samizdataaccent}\pagemark}
+\ihead{\IfFileExists{_extensions/samizdata-co/samizdata/assets/logos/mark.pdf}{\includegraphics[height=0.7cm]{_extensions/samizdata-co/samizdata/assets/logos/mark.pdf}}{\samizdatadisplay\bfseries\textcolor{samizdatainfo}{SAMIZDATA}}}
+\ohead{\small\color{samizdatainfo}\headmark}
+\cfoot{\small\color{samizdatainfo}\pagemark}
 \setlength{\headheight}{24pt}
 \pagestyle{scrheadings}
 
 \titleformat{\section}
-  {\Large\bfseries\color{samizdataaccent}}
+  {\samizdatadisplay\Large\bfseries\color{samizdataink}}
   {\thesection}
   {0.75em}
   {}
 
 \titleformat{\subsection}
-  {\large\bfseries\color{samizdataaccent}}
+  {\samizdatadisplay\large\bfseries\color{samizdataink}}
   {\thesubsection}
   {0.75em}
   {}
 
 \titleformat{\subsubsection}
-  {\normalsize\bfseries\color{samizdataaccent}}
+  {\samizdatadisplay\normalsize\bfseries\color{samizdataink}}
   {\thesubsubsection}
   {0.75em}
   {}

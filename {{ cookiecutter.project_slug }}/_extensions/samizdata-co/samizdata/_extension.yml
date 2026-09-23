@@ -1,0 +1,8 @@
+title: SAMIZDATA
+author: SAMIZDATA
+version: 0.1.0
+quarto-required: ">=1.8.20"
+contributes:
+  metadata:
+    project:
+      brand: _brand.yml
