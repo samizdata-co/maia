@@ -1,24 +1,48 @@
 % PDF delivery overrides: LuaLaTeX cannot obtain Bunny-hosted fonts, so use
-% the vendored copies of the same Space Grotesk and Work Sans families.
+% installed Space Grotesk and Work Sans, or the vendored copies in fonts/.
 \usepackage{xcolor}
 \usepackage{graphicx}
 \usepackage{titlesec}
 \usepackage[automark]{scrlayer-scrpage}
 
-\setmainfont{Work Sans}[
-  Path=fonts/,
-  UprightFont=WorkSans-Variable.ttf,
-  ItalicFont=WorkSans-Italic-Variable.ttf
-]
-\setsansfont{Work Sans}[
-  Path=fonts/,
-  UprightFont=WorkSans-Variable.ttf,
-  ItalicFont=WorkSans-Italic-Variable.ttf
-]
-\newfontfamily\samizdatadisplay{Space Grotesk}[
-  Path=fonts/,
-  UprightFont=SpaceGrotesk-Variable.ttf
-]
+% Documents may live in the project root or one folder down (e.g. docs/).
+% The path is absolute because luaotfload caches fonts by name along with the
+% first path it saw; a relative path breaks documents in the other folder.
+\IfFileExists{fonts/WorkSans-Variable.ttf}
+  {\edef\samizdatafontpath{\directlua{tex.sprint(lfs.currentdir())}/fonts/}}
+  {\edef\samizdatafontpath{\directlua{tex.sprint(lfs.currentdir())}/../fonts/}}
+
+% Prefer installed fonts: that cache also outlives a deleted or moved project,
+% so the vendored copies are only a fallback.
+\IfFontExistsTF{Work Sans}
+  {\setmainfont{Work Sans}\setsansfont{Work Sans}}
+  {
+    % The vendored fonts are variable, so pin each weight explicitly;
+    % otherwise LuaLaTeX uses the default instance and has no bold.
+    \defaultfontfeatures[WorkSans]{
+      Path=\samizdatafontpath,
+      UprightFont=WorkSans-Variable.ttf,
+      UprightFeatures={RawFeature={axis={wght=400}}},
+      BoldFont=WorkSans-Variable.ttf,
+      BoldFeatures={RawFeature={axis={wght=700}}},
+      ItalicFont=WorkSans-Italic-Variable.ttf,
+      ItalicFeatures={RawFeature={axis={wght=400}}},
+      BoldItalicFont=WorkSans-Italic-Variable.ttf,
+      BoldItalicFeatures={RawFeature={axis={wght=700}}}
+    }%
+    \setmainfont{WorkSans}\setsansfont{WorkSans}%
+  }
+\IfFontExistsTF{Space Grotesk}
+  {\newfontfamily\samizdatadisplay{Space Grotesk}}
+  {
+    \newfontfamily\samizdatadisplay{Space Grotesk}[
+      Path=\samizdatafontpath,
+      UprightFont=SpaceGrotesk-Variable.ttf,
+      UprightFeatures={RawFeature={axis={wght=400}}},
+      BoldFont=SpaceGrotesk-Variable.ttf,
+      BoldFeatures={RawFeature={axis={wght=700}}}
+    ]%
+  }
 
 \definecolor{samizdataaccent}{HTML}{9F1853}
 \definecolor{samizdatainfo}{HTML}{7B003C}
@@ -36,23 +60,37 @@
 \setlength{\headheight}{24pt}
 \pagestyle{scrheadings}
 
+% Space Grotesk for the title block
+\setkomafont{title}{\samizdatadisplay\bfseries\color{samizdataink}}
+\setkomafont{author}{\samizdatadisplay\color{samizdatainfo}}
+\setkomafont{date}{\samizdatadisplay\color{samizdatainfo}}
+
 \titleformat{\section}
-  {\samizdatadisplay\Large\bfseries\color{samizdataink}}
+  {\samizdatadisplay\Large\bfseries\color{samizdatainfo}}
   {\thesection}
   {0.75em}
   {}
 
 \titleformat{\subsection}
-  {\samizdatadisplay\large\bfseries\color{samizdataink}}
+  {\samizdatadisplay\large\bfseries\color{samizdatainfo}}
   {\thesubsection}
   {0.75em}
   {}
 
 \titleformat{\subsubsection}
-  {\samizdatadisplay\normalsize\bfseries\color{samizdataink}}
+  {\samizdatadisplay\normalsize\bfseries\color{samizdatainfo}}
   {\thesubsubsection}
   {0.75em}
   {}
+
+% Striped table rows; zero booktabs padding so the stripes have no gaps
+\usepackage{colortbl}
+\definecolor{samizdatastripe}{HTML}{F0EEE9}
+% Pandoc's header rows land on even counts, so stripe odd rows from row 3
+\rowcolors{3}{samizdatastripe}{}
+\setlength{\aboverulesep}{0pt}
+\setlength{\belowrulesep}{0pt}
+\renewcommand{\arraystretch}{1.4}
 
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{0.6em}
