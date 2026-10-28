@@ -1,14 +1,13 @@
 {
   "project_name": "New Project",
-  "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '-') }}",
+  "project_slug": "{{ cookiecutter.project_name|slugify }}",
+  "_extensions": ["cookiecutter.extensions.SlugifyExtension"],
   "project_short_description": "A short description of the project.",
   "full_name": "Nicu Calcea",
   "email": "github@nicu.md",
   "language": ["None", "R", "Python", ["R", "Python"]],
   "virtual_env": ["None", "uv"],
   "notebook": ["None", "Quarto", "Jupyter", "Observable"],
-  "interactive": ["None", "Svelte + Layer Cake"],
-  "graphics_package": "github:samizdata-co/graphics#v0.0.1",
   "__prompts__": {
     "project_name": "Project name",
     "project_slug": "Project slug (used on GitHub)",
@@ -17,8 +16,6 @@
     "email": "Your email address",
     "language": "Programming language",
     "virtual_env": "Virtual environment",
-    "notebook": "Notebook format",
-    "interactive": "Interactive graphics",
-    "graphics_package": "Exactly pinned @samizdata/graphics version or Git tag"
+    "notebook": "Notebook format"
   }
 }
