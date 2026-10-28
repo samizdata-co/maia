@@ -1,0 +1,60 @@
+_min_copier_version: "9.5"
+_subdirectory: template
+_templates_suffix: .jinja
+
+project_name:
+  type: str
+  help: Project name
+  default: "{{ _folder_name | replace('-', ' ') | replace('_', ' ') | title }}"
+
+project_slug:
+  type: str
+  help: Project slug (used on GitHub)
+  default: "{{ _folder_name }}"
+  validator: >-
+    {% if not (project_slug | regex_search('^[a-zA-Z0-9][-_a-zA-Z0-9]+$')) %}
+    Use letters, numbers, hyphens and underscores only, starting with a letter or number.
+    {% endif %}
+
+project_short_description:
+  type: str
+  help: Short description of the project
+  default: A short description of the project.
+
+full_name:
+  type: str
+  help: Your full name
+  default: Nicu Calcea
+
+email:
+  type: str
+  help: Your email address
+  default: github@nicu.md
+
+language:
+  type: str
+  help: Programming languages
+  multiselect: true
+  choices: [R, Python]
+  default: []
+
+notebook:
+  type: str
+  help: Notebook format
+  choices: [None, Quarto, Jupyter, Observable]
+  default: None
+
+virtual_env:
+  type: str
+  help: Virtual environment
+  choices: [None, uv]
+  default: None
+  when: "{{ 'Python' in language or notebook == 'Jupyter' }}"
+
+_tasks:
+  - command: npm install
+    when: "{{ notebook == 'Observable' }}"
+  - command: uv venv --allow-existing
+    when: "{{ virtual_env == 'uv' }}"
+  - command: uv add --dev ipykernel
+    when: "{{ virtual_env == 'uv' and notebook == 'Jupyter' }}"

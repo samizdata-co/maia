@@ -1,0 +1,18 @@
+---
+title: "Analysis: {{ project_name }}"
+author: "{{ full_name }}"
+abstract: "{{ project_short_description }}"
+date: today
+format: pdf
+---
+
+Write your analysis in this file. You can use Markdown, LaTeX, and code blocks.
+
+{% if "R" in language %}```{r}
+#| output: false
+library(tidyverse)
+```{% endif %}
+{% if "Python" in language %}```{python}
+#| output: false
+import pandas as pd
+```{% endif %}

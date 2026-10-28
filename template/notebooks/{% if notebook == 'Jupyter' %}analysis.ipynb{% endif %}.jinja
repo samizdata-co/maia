@@ -6,9 +6,9 @@
       "metadata": {},
       "source": [
         "---\n",
-        "title: Analysis: {{ cookiecutter.project_name }}\n",
-        "author: {{ cookiecutter.full_name }} ({{ cookiecutter.email }})\n",
-        "abstract: {{ cookiecutter.project_short_description }}\n",
+        "title: Analysis: {{ project_name }}\n",
+        "author: {{ full_name }} ({{ email }})\n",
+        "abstract: {{ project_short_description }}\n",
         "---"
       ]
     },
@@ -23,7 +23,7 @@
       },
       "outputs": [],
       "source": [
-        "!{% if cookiecutter.virtual_env == 'uv' %}uv {% endif %}pip install pandas"
+        "!{% if virtual_env == 'uv' %}uv {% endif %}pip install pandas"
       ]
     },
     {
