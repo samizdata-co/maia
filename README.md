@@ -5,7 +5,7 @@ A [Copier](https://copier.readthedocs.io/en/stable/) template for data journalis
 Run the following command, replacing `my-project` with the folder to create. The folder name is used as the default project slug.
 
 ``` bash
-uvx copier copy --trust gh:nicucalcea/maia my-project
+uvx copier copy --trust gh:samizdata-co/maia my-project
 ```
 
 `--trust` lets the template run its setup tasks (`npm install` for Observable, `uv venv` for uv projects). Without it, Copier refuses to generate the project. To skip the flag, add the template to `trust` in [Copier's settings file](https://copier.readthedocs.io/en/stable/settings/).
