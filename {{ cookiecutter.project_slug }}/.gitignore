@@ -5,13 +5,6 @@ publish/*
 # Data
 data/processed/*
 !data/processed/.gitkeep
-!data/processed/web/
-!data/processed/web/**
-
-# Interactive graphics
-visuals/node_modules/
-visuals/static/data/*
-!visuals/static/data/.gitkeep
 
 # Augmenta
 .augmenta
