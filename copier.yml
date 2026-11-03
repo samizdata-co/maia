@@ -69,7 +69,7 @@ charts:
 chart_locales:
   type: str
   help: Chart languages, comma-separated (en, ro, ru); the first is the default
-  default: "{{ 'ro,ru' if outlet == 'zdg' else 'en' }}"
+  default: "{{ 'ro' if outlet == 'zdg' else 'en' }}"
   when: "{{ charts == 'mozaic' }}"
   validator: >-
     {% for locale in chart_locales.split(',') %}{% if locale.strip() not in ['en', 'ro', 'ru'] %}

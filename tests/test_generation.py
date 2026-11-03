@@ -150,7 +150,7 @@ class GenerationTests(unittest.TestCase):
         self.assertEqual(package['devDependencies']['@mozaic/cli'], 'link:../../mozaic/packages/cli')
         config = (charts / 'mozaic.config.ts').read_text()
         self.assertIn("project: 'plain-test'", config)
-        self.assertIn("locales: ['ro', 'ru'] as LocaleCode[]", config)
+        self.assertIn("locales: ['ro'] as LocaleCode[]", config)
         self.assertTrue((charts / 'data/example.csv').is_file())
         self.assertTrue((charts / 'src/charts/example/Chart.svelte').is_file())
         self.assertTrue((charts / 'src/routes/embed/[chart]/[locale]/+page.svelte').is_file())

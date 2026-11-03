@@ -40,7 +40,7 @@ To add an outlet, create its brand repository (with `_brand.yml`, a Quarto exten
 
 ## Charts
 
-`charts: mozaic` adds a `charts/` folder with [mozaic](https://github.com/nicucalcea/mozaic) charts built as static embeds, a preview page and print export, plus a Claude Code skill for building charts. Its house style is the outlet's mozaic theme, copied from the brand's `datavis/mozaic/` folder into `charts/src/lib/brands/<outlet>/` (mozaic's neutral `base` for no outlet). `chart_locales` sets the chart languages (ZdG defaults to `ro,ru`, the others to `en`) and `mozaic_path` the mozaic checkout that `charts/package.json` links (default `../mozaic`). With `--trust`, Copier runs `pnpm install` in `charts/`.
+`charts: mozaic` adds a `charts/` folder with [mozaic](https://github.com/nicucalcea/mozaic) charts built as static embeds, a preview page and print export, plus a Claude Code skill for building charts. Its house style is the outlet's mozaic theme, copied from the brand's `datavis/mozaic/` folder into `charts/src/lib/brands/<outlet>/` (mozaic's neutral `base` for no outlet). `chart_locales` sets the chart languages (ZdG defaults to `ro`, the others to `en`) and `mozaic_path` the mozaic checkout that `charts/package.json` links (default `../mozaic`). With `--trust`, Copier runs `pnpm install` in `charts/`.
 
 When a brand releases a new mozaic theme, copy its `datavis/mozaic/*.ts` over the template's copy; the tests check that the copies match sibling checkouts of the brand repositories.
 
