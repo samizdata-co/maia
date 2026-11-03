@@ -1,6 +1,6 @@
 <!-- One embeddable chart. Query parameters (?medium=print&width=208) are read after hydration. -->
 <script lang="ts">
-	import { Embed, useEmbedParams } from 'mozaic/embed';
+	import { Embed, useEmbedParams } from '@samizdata/mozaic/embed';
 	import { charts } from '../../../../charts';
 	import { theme } from '../../../../lib/theme';
 	import type { PageProps } from './$types';

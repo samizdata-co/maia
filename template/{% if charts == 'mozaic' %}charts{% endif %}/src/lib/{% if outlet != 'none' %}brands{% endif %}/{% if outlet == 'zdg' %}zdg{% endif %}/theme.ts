@@ -13,7 +13,7 @@
  * ramp runs from a pale blue (≥ 2:1 on white) through the brand blue to the
  * site's navies.
  */
-import { extendTheme } from 'mozaic/styles';
+import { extendTheme } from '@samizdata/mozaic/styles';
 import { zdgLogo } from './logo.js';
 
 export const zdg = extendTheme({

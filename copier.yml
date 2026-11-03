@@ -76,12 +76,6 @@ chart_locales:
     Use en, ro and ru, separated by commas.
     {% endif %}{% endfor %}
 
-mozaic_path:
-  type: str
-  help: Path to a mozaic checkout, relative to the project folder or absolute
-  default: ../mozaic
-  when: "{{ charts == 'mozaic' }}"
-
 _tasks:
   - command: npm install
     when: "{{ notebook == 'Observable' }}"

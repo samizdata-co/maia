@@ -146,8 +146,11 @@ class GenerationTests(unittest.TestCase):
         charts = project / 'charts'
         package = json.loads((charts / 'package.json').read_text())
         self.assertEqual(package['name'], 'plain-test-charts')
-        self.assertEqual(package['dependencies']['mozaic'], 'link:../../mozaic/packages/mozaic')
-        self.assertEqual(package['devDependencies']['@mozaic/cli'], 'link:../../mozaic/packages/cli')
+        self.assertEqual(package['dependencies']['@samizdata/mozaic'], '^0.2.0')
+        self.assertEqual(package['devDependencies']['@samizdata/mozaic-cli'], '^0.2.0')
+        example = (charts / 'src/charts/example/Chart.svelte').read_text()
+        self.assertIn("from '@samizdata/mozaic/frame'", example)
+        self.assertNotIn("from 'mozaic/", example)
         config = (charts / 'mozaic.config.ts').read_text()
         self.assertIn("project: 'plain-test'", config)
         self.assertIn("locales: ['ro'] as LocaleCode[]", config)
@@ -161,13 +164,11 @@ class GenerationTests(unittest.TestCase):
         self.assertIn('/lib/', (project / '.gitignore').read_text().splitlines())
 
     def test_mozaic_charts_without_outlet_use_base(self):
-        project = self.generate('outlet=none', 'charts=mozaic', 'chart_locales=en,ro', 'mozaic_path=/opt/mozaic')
+        project = self.generate('outlet=none', 'charts=mozaic', 'chart_locales=en,ro')
         charts = project / 'charts'
         theme = (charts / 'src/lib/theme.ts').read_text()
         self.assertIn("extendTheme({ name: 'plain-test', label: 'Generated Test' })", theme)
         self.assertFalse((charts / 'src/lib/brands').exists())
-        package = json.loads((charts / 'package.json').read_text())
-        self.assertEqual(package['dependencies']['mozaic'], 'link:/opt/mozaic/packages/mozaic')
         self.assertIn("locales: ['en', 'ro']", (charts / 'mozaic.config.ts').read_text())
 
     def test_invalid_chart_locale_is_rejected(self):

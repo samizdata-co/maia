@@ -1,6 +1,6 @@
 import type { Component } from 'svelte';
-import type { LocaleCode } from 'mozaic/locale';
-import type { Medium, Theme } from 'mozaic/styles';
+import type { LocaleCode } from '@samizdata/mozaic/locale';
+import type { Medium, Theme } from '@samizdata/mozaic/styles';
 import Example from './example/Chart.svelte';
 import { messages as exampleMessages } from './example/messages';
 

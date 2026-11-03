@@ -1,5 +1,5 @@
 import { json } from '@sveltejs/kit';
-import type { EmbedManifest } from 'mozaic/embed';
+import type { EmbedManifest } from '@samizdata/mozaic/embed';
 import { charts } from '../../../charts';
 import { config } from '../../../../mozaic.config';
 import { theme } from '../../../lib/theme';

@@ -1,9 +1,9 @@
 <!-- Preview page: every chart in every language, with embed codes and downloads. Not meant for readers. -->
 <script lang="ts">
-	import { embedCode } from 'mozaic/embed';
-	import { downloadPng, downloadSvg } from 'mozaic/export';
-	import { mm } from 'mozaic/core';
-	import type { LocaleCode } from 'mozaic/locale';
+	import { embedCode } from '@samizdata/mozaic/embed';
+	import { downloadPng, downloadSvg } from '@samizdata/mozaic/export';
+	import { mm } from '@samizdata/mozaic/core';
+	import type { LocaleCode } from '@samizdata/mozaic/locale';
 	import { charts } from '../charts';
 	import { config } from '../../mozaic.config';
 	import { theme } from '../lib/theme';

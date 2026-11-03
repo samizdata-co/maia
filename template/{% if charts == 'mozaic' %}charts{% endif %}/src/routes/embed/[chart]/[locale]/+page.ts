@@ -1,5 +1,5 @@
 import { error } from '@sveltejs/kit';
-import type { LocaleCode } from 'mozaic/locale';
+import type { LocaleCode } from '@samizdata/mozaic/locale';
 import { charts } from '../../../../charts';
 import { config } from '../../../../../mozaic.config';
 import type { EntryGenerator, PageLoad } from './$types';

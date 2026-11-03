@@ -11,7 +11,7 @@
  * - Work Sans 700 is loaded for the data-vis "strong" weight (datavis tokens: 700).
  * - Space Grotesk and Work Sans have no Cyrillic: Russian text falls back to the system sans.
  */
-import { extendTheme } from 'mozaic/styles';
+import { extendTheme } from '@samizdata/mozaic/styles';
 import { samizdataMark } from './logo.js';
 
 export const samizdata = extendTheme({

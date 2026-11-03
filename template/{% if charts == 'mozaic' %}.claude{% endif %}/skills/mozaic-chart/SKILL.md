@@ -14,7 +14,7 @@ description: Build or change a chart in this project's charts/ folder (mozaic). 
 3. **Files.** Work in `charts/`. Copy `src/charts/example/` to `src/charts/<slug>/`. Edit `data.ts` (import the CSV
    with `?raw`, parse with `csvParse(raw, autoType)`, type the rows), `messages.ts` (title,
    subtitle, alt, notes, source per language) and `Chart.svelte`.
-4. **Compose.** If a recipe in `mozaic/recipes` fits (`BarChart`, `ColumnChart`, `LineChart`,
+4. **Compose.** If a recipe in `@samizdata/mozaic/recipes` fits (`BarChart`, `ColumnChart`, `LineChart`,
    `ScatterChart`, `ArrowChart`, `BarDotChart`, `StackedBarChart`, `MosaicChart`), wrap it: pass the data, accessors and strings. A new
    form that other charts could reuse goes into mozaic as a recipe, not into this project.
    Otherwise use `Chart` / `Header` / `Plot` / `Svg` / marks / guides / `Footer` from mozaic.
