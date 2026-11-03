@@ -1,0 +1,15 @@
+import type { LocaleCode } from 'mozaic/locale';
+
+/** Project settings. Charts are registered in src/charts/index.ts; the house style is src/lib/theme.ts. */
+export const config = {
+	/** Used in URLs and file names. */
+	project: '{{ project_slug }}',
+	title: '{{ project_name }}',
+	/** Languages to build. The first is the default. */
+	locales: [{% for locale in chart_locales.split(',') %}'{{ locale.strip() }}'{% if not loop.last %}, {% endif %}{% endfor %}] as LocaleCode[],
+	/**
+	 * Public URL where `build/` will be deployed, with a trailing slash, e.g.
+	 * `https://charts.example.com/{{ project_slug }}/`. Used for embed codes.
+	 */
+	baseUrl: ''
+};

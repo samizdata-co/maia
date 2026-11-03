@@ -9,12 +9,35 @@
 {% elif notebook == 'Observable' %}To build the Observable Notebook run `npm run dev` to preview or `npm run build` to build it to the `output` directory.
 {% endif %}
 
+{% if outlet == 'samizdata' -%}
 ## SAMIZDATA report styling
 
 - This project includes the pinned SAMIZDATA Quarto Brand Extension under `_extensions/`.
 - PDF reports use the same Space Grotesk and Work Sans families from vendored files in `fonts/`.
 - `samizdata-pdf.tex` and `samizdata-before-body.tex` contain only PDF delivery and composition overrides.
+{% elif outlet == 'zdg' -%}
+## Ziarul de Gardă report styling
 
+- This project includes the pinned Ziarul de Gardă Quarto Brand Extension under `_extensions/`.
+- PDF reports use Source Serif Pro and Source Sans Pro when they are installed; otherwise LuaLaTeX uses its default fonts.
+- `zdg-pdf.tex` contains only PDF delivery overrides.
+{% endif -%}
+{% if charts == 'mozaic' %}
+## Charts
+
+`charts/` holds the [mozaic](https://github.com/nicucalcea/mozaic) charts: one folder per chart in `charts/src/charts/`, built as static embeds and print files. It links mozaic from `{{ mozaic_path }}`, so build the library there once (`pnpm --filter mozaic package`).
+
+```bash
+cd charts
+pnpm install
+pnpm dev       # preview every chart at http://localhost:5173
+pnpm check     # type-check
+pnpm build     # static embeds in charts/build/
+pnpm export    # SVG, PDF and PNG in charts/exports/ (needs a Chromium)
+```
+
+Write the data each chart needs to `charts/data/` (committed; `data/processed/` is not). The house style is `charts/src/lib/theme.ts`{% if outlet != 'none' %}, which uses the copy of the outlet's brand in `charts/src/lib/brands/` (do not edit it; `copier update` brings new brand releases){% endif %}. See `charts/AGENTS.md` for the conventions.
+{% endif %}
 ## Tracking time
 
 This project uses [klog](https://klog.jotaen.net/) to track time spent on it.

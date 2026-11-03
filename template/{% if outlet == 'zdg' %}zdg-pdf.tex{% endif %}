@@ -1,0 +1,24 @@
+% PDF delivery overrides for Ziarul de Gardă. LuaLaTeX cannot obtain the
+% Bunny-hosted brand fonts, so it uses installed Source Serif Pro and Source
+% Sans Pro, or the engine's default fonts when they are missing.
+\usepackage{xcolor}
+
+\IfFontExistsTF{Source Sans Pro}
+  {\setmainfont{Source Sans Pro}\setsansfont{Source Sans Pro}}
+  {}
+\IfFontExistsTF{Source Serif Pro}
+  {\newfontfamily\zdgdisplay{Source Serif Pro}}
+  {\newcommand\zdgdisplay{\rmfamily}}
+
+\definecolor{zdgblue}{HTML}{0158B5}
+\definecolor{zdgnavy}{HTML}{002853}
+\definecolor{zdgink}{HTML}{171717}
+\definecolor{zdgmeta}{HTML}{718BA7}
+
+\AtBeginDocument{\color{zdgink}}
+
+% Source Serif for the title block and headings, as on zdg.md
+\setkomafont{title}{\zdgdisplay\bfseries\color{zdgnavy}}
+\setkomafont{author}{\color{zdgmeta}}
+\setkomafont{date}{\color{zdgmeta}}
+\setkomafont{disposition}{\zdgdisplay\bfseries\color{zdgnavy}}

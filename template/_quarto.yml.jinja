@@ -1,8 +1,11 @@
 project:
   output-dir: output
   execute-dir: project
-
+{% if outlet == 'samizdata' %}
 # The pinned extension in _extensions/samizdata-co/samizdata supplies the brand.
+{%- elif outlet == 'zdg' %}
+# The pinned extension in _extensions/ziaruldegarda/zdg supplies the brand.
+{%- endif %}
 execute:
   cache: true
 
@@ -22,16 +25,30 @@ format:
     standalone: true
   pdf:
     pdf-engine: lualatex
+{%- if outlet == 'samizdata' %}
     titlepage: true
     titlepage-color: "9f1853"
     titlepage-text-color: "FFFFFF"
     titlepage-rule-color: "FFFFFF"
+{%- elif outlet == 'zdg' %}
+    titlepage: true
+    titlepage-color: "0158b5"
+    titlepage-text-color: "FFFFFF"
+    titlepage-rule-color: "FFFFFF"
+{%- endif %}
     toc: true
     toc-depth: 2
     number-sections: true
     colorlinks: true
+{%- if outlet == 'samizdata' %}
     linkcolor: samizdataaccent
     urlcolor: samizdataaccent
     citecolor: samizdatainfo
     include-in-header: samizdata-pdf.tex
     include-before-body: samizdata-before-body.tex
+{%- elif outlet == 'zdg' %}
+    linkcolor: zdgblue
+    urlcolor: zdgblue
+    citecolor: zdgnavy
+    include-in-header: zdg-pdf.tex
+{%- endif %}

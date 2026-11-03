@@ -31,6 +31,15 @@ email:
   help: Your email address
   default: github@nicu.md
 
+outlet:
+  type: str
+  help: Outlet (its brand styles reports and charts)
+  choices:
+    SAMIZDATA: samizdata
+    Ziarul de Gardă: zdg
+    None: none
+  default: samizdata
+
 language:
   type: str
   help: Programming languages
@@ -51,6 +60,28 @@ virtual_env:
   default: None
   when: "{{ 'Python' in language or notebook == 'Jupyter' }}"
 
+charts:
+  type: str
+  help: Charts
+  choices: [None, mozaic]
+  default: None
+
+chart_locales:
+  type: str
+  help: Chart languages, comma-separated (en, ro, ru); the first is the default
+  default: "{{ 'ro,ru' if outlet == 'zdg' else 'en' }}"
+  when: "{{ charts == 'mozaic' }}"
+  validator: >-
+    {% for locale in chart_locales.split(',') %}{% if locale.strip() not in ['en', 'ro', 'ru'] %}
+    Use en, ro and ru, separated by commas.
+    {% endif %}{% endfor %}
+
+mozaic_path:
+  type: str
+  help: Path to a mozaic checkout, relative to the project folder or absolute
+  default: ../mozaic
+  when: "{{ charts == 'mozaic' }}"
+
 _tasks:
   - command: npm install
     when: "{{ notebook == 'Observable' }}"
@@ -58,3 +89,5 @@ _tasks:
     when: "{{ virtual_env == 'uv' }}"
   - command: uv add --dev ipykernel
     when: "{{ virtual_env == 'uv' and notebook == 'Jupyter' }}"
+  - command: pnpm install --dir charts
+    when: "{{ charts == 'mozaic' }}"

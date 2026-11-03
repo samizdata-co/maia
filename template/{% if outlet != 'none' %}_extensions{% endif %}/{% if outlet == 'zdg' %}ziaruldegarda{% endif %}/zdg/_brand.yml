@@ -1,0 +1,67 @@
+meta:
+  name:
+    full: Ziarul de Gardă
+    short: ZdG
+  link:
+    home: https://www.zdg.md
+  description: |
+    Identity for Ziarul de Gardă's data journalism: reports, analysis and
+    charts. Taken from the zdg.md site design (October 2026).
+
+logo:
+  images:
+    wordmark:
+      path: assets/logos/logo.svg
+      alt: "Ziarul de Gardă: spune adevărul"
+  small: wordmark
+  medium: wordmark
+  large: wordmark
+
+color:
+  palette:
+    blue: "#0158B5"
+    navy: "#002853"
+    navy-light: "#10357F"
+    coral: "#FF595A"
+    ink: "#171717"
+    grey: "#585858"
+    meta: "#718BA7"
+    pale-blue: "#CDD7EE"
+    white: "#FFFFFF"
+
+  foreground: ink
+  background: white
+  primary: blue
+  secondary: grey
+  tertiary: pale-blue
+  danger: coral
+  light: white
+  dark: navy
+
+typography:
+  fonts:
+    - family: Source Serif Pro
+      source: bunny
+      weight: [600]
+      style: normal
+      display: swap
+    - family: Source Sans Pro
+      source: bunny
+      weight: [400, 600, 700]
+      style: [normal, italic]
+      display: swap
+
+  base:
+    family: Source Sans Pro
+    weight: 400
+    line-height: 1.6
+
+  headings:
+    family: Source Serif Pro
+    weight: 600
+    line-height: 1.25
+    color: ink
+
+  link:
+    color: blue
+    decoration: underline

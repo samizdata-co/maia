@@ -24,11 +24,25 @@ Copier merges template changes with your own edits and marks any conflicts in th
 
 Template checks can be run with `uv run -m unittest discover -s tests -v`.
 
-## Quarto branding
+## Outlets
 
-Generated projects vendor the pinned SAMIZDATA Quarto Brand Extension from [`samizdata-co/brand@v0.1.0`](https://github.com/samizdata-co/brand/tree/v0.1.0). The extension is committed into each generated project, so rendering never fetches a mutable remote dependency.
+The `outlet` question picks the brand for reports and charts: **SAMIZDATA** (the default), **Ziarul de Gardă** or **None**. Each outlet's brand lives in its own repository, and the template vendors a pinned copy, so generated projects never fetch a mutable remote dependency:
 
-Matching Space Grotesk and Work Sans files are included for offline PDF rendering, with PDF-only composition in `samizdata-pdf.tex` and `samizdata-before-body.tex`. Update the template's extension deliberately by running `quarto update extension samizdata-co/brand@<tag>` inside `template/`, and regenerate/test a project before committing.
+| Outlet          | Brand repository                                                       | Quarto extension                         | PDF                                                                 |
+| --------------- | ---------------------------------------------------------------------- | ---------------------------------------- | ------------------------------------------------------------------- |
+| SAMIZDATA       | [`samizdata-co/brand`](https://github.com/samizdata-co/brand)          | `_extensions/samizdata-co/samizdata`     | vendored Space Grotesk and Work Sans, `samizdata-pdf.tex` and `samizdata-before-body.tex` |
+| Ziarul de Gardă | [`ziaruldegarda/brand`](https://github.com/ziaruldegarda/brand)        | `_extensions/ziaruldegarda/zdg`          | `zdg-pdf.tex`; Source Serif Pro and Source Sans Pro when installed  |
+| None            |                                                                        |                                          |                                                                     |
+
+The SAMIZDATA extension is pinned at [`samizdata-co/brand@v0.1.0`](https://github.com/samizdata-co/brand/tree/v0.1.0). Update an extension deliberately by running `quarto update extension samizdata-co/brand@<tag>` (or `ziaruldegarda/brand@<tag>`) inside `template/` and moving the result into the outlet's conditional folder, then regenerate and test a project before committing.
+
+To add an outlet, create its brand repository (with `_brand.yml`, a Quarto extension and `datavis/mozaic/`), add it to the `outlet` choices in `copier.yml`, and vendor its files under conditional names (`{% if outlet == '<name>' %}…{% endif %}`) like the existing two.
+
+## Charts
+
+`charts: mozaic` adds a `charts/` folder with [mozaic](https://github.com/nicucalcea/mozaic) charts built as static embeds, a preview page and print export, plus a Claude Code skill for building charts. Its house style is the outlet's mozaic theme, copied from the brand's `datavis/mozaic/` folder into `charts/src/lib/brands/<outlet>/` (mozaic's neutral `base` for no outlet). `chart_locales` sets the chart languages (ZdG defaults to `ro,ru`, the others to `en`) and `mozaic_path` the mozaic checkout that `charts/package.json` links (default `../mozaic`). With `--trust`, Copier runs `pnpm install` in `charts/`.
+
+When a brand releases a new mozaic theme, copy its `datavis/mozaic/*.ts` over the template's copy; the tests check that the copies match sibling checkouts of the brand repositories.
 
 ## Structure
 
@@ -45,8 +59,9 @@ Here's the current folder structure.
 ├── notebooks                           # analysis of already cleaned data
 │   └── analysis.ext                    # Quarto, Jupyter or Observable notebook
 ├── output                              # publishable notebooks, dashboards, charts, stories, etc.
-├── _extensions/samizdata-co/samizdata # pinned SAMIZDATA Quarto brand
-├── fonts                               # offline PDF copies of brand fonts
+├── charts                              # (mozaic) charts: src/charts/, data/, preview and embeds
+├── _extensions/<org>/<outlet>          # pinned Quarto brand of the outlet
+├── fonts                               # (SAMIZDATA) offline PDF copies of brand fonts
 ├── _quarto.yml                         # Quarto config
 ├── .gitignore                          # files to be ignored by version control
 ├── .Rprofile                           # (R) environment variables

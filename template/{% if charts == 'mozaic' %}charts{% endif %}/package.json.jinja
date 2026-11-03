@@ -1,0 +1,42 @@
+{%- set mozaic = mozaic_path if mozaic_path.startswith('/') else '../' ~ mozaic_path -%}
+{
+	"name": "{{ project_slug | lower }}-charts",
+	"private": true,
+	"version": "0.0.1",
+	"type": "module",
+	"scripts": {
+		"dev": "vite dev",
+		"build": "vite build",
+		"preview": "vite preview",
+		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+		"export": "mozaic export build",
+		"prepare": "svelte-kit sync || echo ''"
+	},
+	"dependencies": {
+		"d3-array": "^3.2.4",
+		"d3-dsv": "^3.0.1",
+		"d3-format": "^3.1.0",
+		"d3-geo": "^3.1.1",
+		"d3-scale": "^4.0.2",
+		"d3-shape": "^3.2.0",
+		"d3-time-format": "^4.1.0",
+		"mozaic": "link:{{ mozaic }}/packages/mozaic"
+	},
+	"devDependencies": {
+		"@mozaic/cli": "link:{{ mozaic }}/packages/cli",
+		"@sveltejs/adapter-static": "^4.0.0",
+		"@sveltejs/kit": "^3.1.0",
+		"@sveltejs/vite-plugin-svelte": "^7.3.1",
+		"@types/d3-array": "^3.2.1",
+		"@types/d3-dsv": "^3.0.7",
+		"@types/d3-scale": "^4.0.8",
+		"@types/d3-shape": "^3.1.6",
+		"svelte": "^5.57.2",
+		"svelte-check": "^4.7.7",
+		"typescript": "^6.0.3",
+		"vite": "^8.3.5"
+	},
+	"engines": {
+		"node": ">=22.17"
+	}
+}

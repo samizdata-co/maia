@@ -76,15 +76,14 @@ uvx copier copy --defaults --skip-tasks gh:samizdata-co/maia <scratch>/release-c
 
 Look for `Copying from template version X.Y.Z` and `_commit: vX.Y.Z` in the generated `.copier-answers.yml`, and spot-check the files you changed. For risky changes, also check an update. Generate a project from the previous tag (`--vcs-ref vPREV`), `git init` and commit it, then run `uvx copier update --defaults --skip-tasks` and check the diff.
 
-## Brand extension updates
+## Brand updates
 
-The SAMIZDATA Quarto extension is vendored into `template/_extensions/samizdata-co/samizdata`. To bump it:
+Each outlet's brand is vendored under conditional names, so only the chosen outlet's files reach a project:
 
-```bash
-cd template && quarto update extension samizdata-co/brand@<tag>
-```
+- Quarto extensions: `template/{% if outlet != 'none' %}_extensions{% endif %}/{% if outlet == 'samizdata' %}samizdata-co{% endif %}/samizdata` and `…/{% if outlet == 'zdg' %}ziaruldegarda{% endif %}/zdg`.
+- mozaic themes: `template/{% if charts == 'mozaic' %}charts{% endif %}/src/lib/{% if outlet != 'none' %}brands{% endif %}/<outlet>/` (`theme.ts`, `logo.ts`), copied from the brand's `datavis/mozaic/`.
 
-Then update the pinned version in `test_project_vendors_single_pinned_brand` and the version link in README.md, and release as a minor version. This is the main reason the template moved to Copier: existing projects pick up brand updates with `copier update`.
+To bump a Quarto extension, install it into a scratch Quarto project (`quarto add samizdata-co/brand@<tag>` or `ziaruldegarda/brand@<tag>`) and copy the installed folder over the template's. To bump a mozaic theme, copy the brand's `datavis/mozaic/*.ts` over the template's copy (`test_vendored_mozaic_themes_match_brands` compares them with sibling brand checkouts). Then update the pinned versions in the brand tests and README.md, and release as a minor version. This is the main reason the template moved to Copier: existing projects pick up brand updates with `copier update`.
 
 ## Things that trip people up
 

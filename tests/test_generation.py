@@ -1,3 +1,4 @@
+import json
 import shutil
 import subprocess
 import tempfile
@@ -96,6 +97,96 @@ class GenerationTests(unittest.TestCase):
         self.assertNotIn('brand: _brand.yml', quarto)
         self.assertTrue((project / 'fonts/SpaceGrotesk-Variable.ttf').is_file())
         self.assertTrue((project / 'fonts/WorkSans-Variable.ttf').is_file())
+        self.assertIn('include-in-header: samizdata-pdf.tex', quarto)
+        self.assertFalse((project / '_extensions/ziaruldegarda').exists())
+
+    def test_zdg_project_vendors_zdg_brand(self):
+        project = self.generate('outlet=zdg')
+        extension = project / '_extensions/ziaruldegarda/zdg'
+        self.assertTrue((extension / '_brand.yml').is_file())
+        self.assertTrue((extension / 'assets/logos/logo.svg').is_file())
+        self.assertIn('version: 0.1.0', (extension / '_extension.yml').read_text())
+        quarto = (project / '_quarto.yml').read_text()
+        self.assertIn('include-in-header: zdg-pdf.tex', quarto)
+        self.assertNotIn('samizdata', quarto)
+        self.assertTrue((project / 'zdg-pdf.tex').is_file())
+        self.assertFalse((project / '_extensions/samizdata-co').exists())
+        self.assertFalse((project / 'fonts').exists())
+        self.assertFalse((project / 'samizdata-pdf.tex').exists())
+        self.assertIn('Ziarul de Gardă report styling', (project / 'README.md').read_text())
+
+    def test_project_without_outlet_has_no_brand(self):
+        project = self.generate('outlet=none')
+        self.assertFalse((project / '_extensions').exists())
+        self.assertFalse((project / 'fonts').exists())
+        self.assertEqual(sorted(p.name for p in project.glob('*.tex')), [])
+        quarto = (project / '_quarto.yml').read_text()
+        self.assertNotIn('include-in-header', quarto)
+        self.assertNotIn('report styling', (project / 'README.md').read_text())
+
+    def test_plain_project_has_no_charts(self):
+        project = self.generate()
+        self.assertFalse((project / 'charts').exists())
+        self.assertFalse((project / '.claude').exists())
+
+    def test_mozaic_charts_use_the_outlet_theme(self):
+        for outlet, export in (('samizdata', 'samizdata'), ('zdg', 'zdg')):
+            with self.subTest(outlet=outlet):
+                project = self.generate(f'outlet={outlet}', 'charts=mozaic')
+                charts = project / 'charts'
+                theme = (charts / 'src/lib/theme.ts').read_text()
+                self.assertIn(f"export {{ {export} as theme }} from './brands/{outlet}/theme.js';", theme)
+                brand = (charts / f'src/lib/brands/{outlet}/theme.ts').read_text()
+                self.assertIn(f'export const {export} = extendTheme(', brand)
+                self.assertTrue((charts / f'src/lib/brands/{outlet}/logo.ts').is_file())
+                self.assertEqual(len(list((charts / 'src/lib/brands').iterdir())), 1)
+
+    def test_mozaic_charts_project(self):
+        project = self.generate('outlet=zdg', 'charts=mozaic')
+        charts = project / 'charts'
+        package = json.loads((charts / 'package.json').read_text())
+        self.assertEqual(package['name'], 'plain-test-charts')
+        self.assertEqual(package['dependencies']['mozaic'], 'link:../../mozaic/packages/mozaic')
+        self.assertEqual(package['devDependencies']['@mozaic/cli'], 'link:../../mozaic/packages/cli')
+        config = (charts / 'mozaic.config.ts').read_text()
+        self.assertIn("project: 'plain-test'", config)
+        self.assertIn("locales: ['ro', 'ru'] as LocaleCode[]", config)
+        self.assertTrue((charts / 'data/example.csv').is_file())
+        self.assertTrue((charts / 'src/charts/example/Chart.svelte').is_file())
+        self.assertTrue((charts / 'src/routes/embed/[chart]/[locale]/+page.svelte').is_file())
+        self.assertIn('{#snippet children(plot)}', (charts / 'AGENTS.md').read_text())
+        self.assertTrue((project / '.claude/skills/mozaic-chart/SKILL.md').is_file())
+        self.assertIn('## Charts', (project / 'README.md').read_text())
+        # The root .gitignore must not hide the charts' src/lib.
+        self.assertIn('/lib/', (project / '.gitignore').read_text().splitlines())
+
+    def test_mozaic_charts_without_outlet_use_base(self):
+        project = self.generate('outlet=none', 'charts=mozaic', 'chart_locales=en,ro', 'mozaic_path=/opt/mozaic')
+        charts = project / 'charts'
+        theme = (charts / 'src/lib/theme.ts').read_text()
+        self.assertIn("extendTheme({ name: 'plain-test', label: 'Generated Test' })", theme)
+        self.assertFalse((charts / 'src/lib/brands').exists())
+        package = json.loads((charts / 'package.json').read_text())
+        self.assertEqual(package['dependencies']['mozaic'], 'link:/opt/mozaic/packages/mozaic')
+        self.assertIn("locales: ['en', 'ro']", (charts / 'mozaic.config.ts').read_text())
+
+    def test_invalid_chart_locale_is_rejected(self):
+        result = self.generate('charts=mozaic', 'chart_locales=en,fr', check=False)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn('Use en, ro and ru', result.stderr)
+
+    def test_vendored_mozaic_themes_match_brands(self):
+        brands = {
+            'samizdata': ROOT.parent / 'samizdata/brand/datavis/mozaic',
+            'zdg': ROOT.parent / 'ziaruldegarda/brand/datavis/mozaic',
+        }
+        for outlet, source in brands.items():
+            if not source.is_dir():
+                continue
+            vendored = next((ROOT / 'template').glob(f"*charts*/src/lib/*brands*/*'{outlet}'*"))
+            for file in ('theme.ts', 'logo.ts'):
+                with self.subTest(outlet=outlet, file=file):
+                    self.assertEqual((vendored / file).read_text(), (source / file).read_text())
 
 
 if __name__ == '__main__':

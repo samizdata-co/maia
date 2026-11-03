@@ -1,0 +1,23 @@
+{% if outlet == 'samizdata' -%}
+/**
+ * The house style for every chart in this project: SAMIZDATA, from the copy of
+ * samizdata-co/brand's datavis/mozaic/ in ./brands/samizdata/. Do not edit the
+ * copy; `copier update` replaces it with the template's pinned brand release.
+ */
+export { samizdata as theme } from './brands/samizdata/theme.js';
+{% elif outlet == 'zdg' -%}
+/**
+ * The house style for every chart in this project: Ziarul de Gardă, from the
+ * copy of ziaruldegarda/brand's datavis/mozaic/ in ./brands/zdg/. Do not edit
+ * the copy; `copier update` replaces it with the template's pinned brand release.
+ */
+export { zdg as theme } from './brands/zdg/theme.js';
+{% else -%}
+import { extendTheme } from 'mozaic/styles';
+
+/**
+ * The house style for every chart in this project. It starts from mozaic's
+ * neutral `base`; change tokens, palettes and the logo here.
+ */
+export const theme = extendTheme({ name: '{{ project_slug }}', label: '{{ project_name }}' });
+{% endif -%}
