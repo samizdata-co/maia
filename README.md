@@ -56,8 +56,9 @@ Here's the current folder structure.
 │   ├── processed                       # final datasets
 │   └── raw                             # raw, immutable data
 ├── etl                                 # scripts to clean and process data
-├── notebooks                           # analysis of already cleaned data
-│   └── analysis.ext                    # Quarto, Jupyter or Observable notebook
+├── docs                                # analysis of already cleaned data, and the article
+│   ├── analysis.ext                    # Quarto, Jupyter or Observable notebook
+│   └── story.md                        # article
 ├── output                              # publishable notebooks, dashboards, charts, stories, etc.
 ├── charts                              # (mozaic) charts: src/charts/, data/, preview and embeds
 ├── _extensions/<org>/<outlet>          # pinned Quarto brand of the outlet
@@ -68,6 +69,5 @@ Here's the current folder structure.
 ├── <project_slug>.Rproj               # (R) RStudio project
 ├── package.json                        # (Observable) run scripts
 ├── README.md                           # boilerplate with instructions, sources, etc
-├── .copier-answers.yml                 # template answers, used by copier update
-└── story.md                            # article
+└── .copier-answers.yml                 # template answers, used by copier update
 ```

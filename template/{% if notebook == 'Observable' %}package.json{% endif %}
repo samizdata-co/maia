@@ -5,8 +5,8 @@
     "@observablehq/notebook-kit": "^1.5.0"
   },
   "scripts": {
-    "dev": "notebooks preview --root notebooks",
-    "build": "notebooks build --root notebooks --out ../output -- notebooks/analysis.html"
+    "dev": "notebooks preview --root docs",
+    "build": "notebooks build --root docs --out ../output -- docs/analysis.html"
   },
   "devDependencies": {
     "rimraf": "^5.0.5"

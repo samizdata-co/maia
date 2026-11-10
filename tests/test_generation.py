@@ -35,7 +35,7 @@ class GenerationTests(unittest.TestCase):
 
     def test_plain_project_has_no_optional_files(self):
         project = self.generate()
-        self.assertEqual(sorted(p.name for p in (project / 'notebooks').iterdir()), ['.gitkeep'])
+        self.assertEqual(sorted(p.name for p in (project / 'docs').iterdir()), ['.gitkeep'])
         self.assertFalse((project / 'pyproject.toml').exists())
         self.assertFalse(list(project.glob('*.Rproj')))
 
@@ -48,26 +48,26 @@ class GenerationTests(unittest.TestCase):
     def test_r_quarto_project(self):
         project = self.generate('language=[R]', 'notebook=Quarto')
         self.assertTrue((project / 'plain-test.Rproj').is_file())
-        analysis = (project / 'notebooks/analysis.qmd').read_text()
+        analysis = (project / 'docs/analysis.qmd').read_text()
         self.assertIn('title: "Analysis: Generated Test"', analysis)
         self.assertIn('library(tidyverse)', analysis)
         self.assertNotIn('import pandas', analysis)
-        self.assertFalse((project / 'notebooks/analysis.ipynb').exists())
+        self.assertFalse((project / 'docs/analysis.ipynb').exists())
 
     def test_python_jupyter_uv_project(self):
         project = self.generate('language=[Python]', 'notebook=Jupyter', 'virtual_env=uv')
         self.assertIn('name = "plain-test"', (project / 'pyproject.toml').read_text())
-        self.assertIn('!uv pip install pandas', (project / 'notebooks/analysis.ipynb').read_text())
+        self.assertIn('!uv pip install pandas', (project / 'docs/analysis.ipynb').read_text())
         self.assertFalse(list(project.glob('*.Rproj')))
 
     def test_observable_project(self):
         project = self.generate('notebook=Observable')
         self.assertTrue((project / 'package.json').is_file())
-        self.assertIn('Analysis: Generated Test', (project / 'notebooks/analysis.onb.html').read_text())
+        self.assertIn('Analysis: Generated Test', (project / 'docs/analysis.onb.html').read_text())
 
     def test_rendered_text_has_no_template_tags(self):
         project = self.generate('language=[R, Python]', 'notebook=Quarto')
-        for name in ('README.md', 'story.md', 'hours.klg', 'LICENSE', 'notebooks/analysis.qmd'):
+        for name in ('README.md', 'docs/story.md', 'hours.klg', 'LICENSE', 'docs/analysis.qmd'):
             text = (project / name).read_text()
             self.assertNotIn('{{', text, name)
             self.assertNotIn('{%', text, name)
