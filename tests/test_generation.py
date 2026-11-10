@@ -210,6 +210,38 @@ class GenerationTests(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0)
         self.assertIn('Use en, ro and ru', result.stderr)
 
+    def test_update_from_v2_keeps_notebooks_in_docs(self):
+        temporary = Path(tempfile.mkdtemp())
+        self.addCleanup(shutil.rmtree, temporary)
+        template, project = temporary / 'template', temporary / 'project'
+        git = lambda *args, cwd: subprocess.run(
+            ['git', '-c', 'user.name=t', '-c', 'user.email=t@t', *args],
+            cwd=cwd, check=True, capture_output=True,
+        )
+        # A clone with HEAD tagged as a far-future release, so the v3.0.0 migration runs.
+        git('clone', '-q', str(ROOT), str(template), cwd=temporary)
+        git('tag', 'v99.0.0', cwd=template)
+        copier = ['uvx', 'copier']
+        flags = ['--quiet', '--trust', '--defaults', '--skip-tasks']
+        subprocess.run(
+            [*copier, 'copy', *flags, '--vcs-ref', 'v2.0.0', '--data', 'notebook=Quarto',
+             '--data', 'project_slug=update-test', str(template), str(project)],
+            check=True, capture_output=True,
+        )
+        git('init', '-q', cwd=project)
+        with open(project / 'notebooks/analysis.qmd', 'a') as file:
+            file.write('my analysis\n')
+        (project / 'notebooks/extra.qmd').write_text('extra\n')
+        git('add', '-A', cwd=project)
+        git('commit', '-qm', 'init', cwd=project)
+        result = subprocess.run([*copier, 'update', *flags], cwd=project, capture_output=True, text=True)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertFalse((project / 'notebooks').exists())
+        self.assertFalse((project / 'story.md').exists())
+        self.assertIn('my analysis', (project / 'docs/analysis.qmd').read_text())
+        self.assertEqual((project / 'docs/extra.qmd').read_text(), 'extra\n')
+        self.assertTrue((project / 'docs/story.md').is_file())
+
     def test_vendored_mozaic_themes_match_brands(self):
         brands = {
             'samizdata': ROOT.parent / 'samizdata/brand/datavis/mozaic',

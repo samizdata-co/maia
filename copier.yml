@@ -94,6 +94,17 @@ mozaic_path:
     Use an absolute path to the mozaic repository.
     {% endif %}
 
+_migrations:
+  # v3 moved notebooks/ and story.md into docs/. The update replaces them with fresh template
+  # copies, so put back the project's own committed versions (and any other notebooks) there.
+  - version: v3.0.0
+    when: "{{ _stage == 'after' }}"
+    command: >-
+      git ls-tree -r --name-only HEAD -- notebooks story.md | while IFS= read -r f; do
+      t="docs/${f#notebooks/}"; [ "$f" = story.md ] && t=docs/story.md;
+      mkdir -p "$(dirname "$t")"; git show "HEAD:$f" > "$t"; rm -f "$f";
+      done; rmdir notebooks 2>/dev/null || true
+
 _tasks:
   - command: npm install
     when: "{{ notebook == 'Observable' }}"
