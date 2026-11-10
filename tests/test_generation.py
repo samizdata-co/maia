@@ -159,7 +159,9 @@ class GenerationTests(unittest.TestCase):
         self.assertEqual(package['name'], 'plain-test-charts')
         version = self.copier_default('mozaic_version')
         self.assertEqual(package['dependencies']['@samizdata/mozaic'], f'^{version}')
-        self.assertEqual(package['devDependencies']['@samizdata/mozaic-cli'], f'^{version}')
+        # The mozaic command ships with @samizdata/mozaic (since 0.7.0).
+        self.assertNotIn('@samizdata/mozaic-cli', package['devDependencies'])
+        self.assertEqual(package['scripts']['export'], 'mozaic export build')
         example = (charts / 'src/charts/example/Chart.svelte').read_text()
         self.assertIn("from '@samizdata/mozaic/frame'", example)
         self.assertNotIn("from 'mozaic/", example)
@@ -183,7 +185,7 @@ class GenerationTests(unittest.TestCase):
         project = self.generate('charts=mozaic', 'mozaic_path=/opt/mozaic')
         package = json.loads((project / 'charts/package.json').read_text())
         self.assertEqual(package['dependencies']['@samizdata/mozaic'], 'link:/opt/mozaic/packages/mozaic')
-        self.assertEqual(package['devDependencies']['@samizdata/mozaic-cli'], 'link:/opt/mozaic/packages/cli')
+        self.assertNotIn('@samizdata/mozaic-cli', package['devDependencies'])
 
     def test_relative_mozaic_path_is_rejected(self):
         result = self.generate('charts=mozaic', 'mozaic_path=../mozaic', check=False)
