@@ -10,6 +10,16 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class GenerationTests(unittest.TestCase):
+    @staticmethod
+    def copier_default(name: str) -> str:
+        # copier.yml is flat YAML; read a default without a YAML dependency.
+        lines = (ROOT / 'copier.yml').read_text().splitlines()
+        start = lines.index(f'{name}:')
+        for line in lines[start + 1:]:
+            if line.strip().startswith('default:'):
+                return line.split(':', 1)[1].strip().strip('"')
+        raise KeyError(name)
+
     def generate(self, *data: str, slug: str = 'plain-test', check: bool = True):
         temporary = Path(tempfile.mkdtemp())
         self.addCleanup(shutil.rmtree, temporary)
@@ -35,7 +45,7 @@ class GenerationTests(unittest.TestCase):
 
     def test_plain_project_has_no_optional_files(self):
         project = self.generate()
-        self.assertEqual(sorted(p.name for p in (project / 'docs').iterdir()), ['.gitkeep'])
+        self.assertEqual(sorted(p.name for p in (project / 'docs').iterdir()), ['.gitkeep', 'story.md'])
         self.assertFalse((project / 'pyproject.toml').exists())
         self.assertFalse(list(project.glob('*.Rproj')))
 
@@ -128,6 +138,7 @@ class GenerationTests(unittest.TestCase):
         project = self.generate()
         self.assertFalse((project / 'charts').exists())
         self.assertFalse((project / '.claude').exists())
+        self.assertFalse((project / '.github').exists())
 
     def test_mozaic_charts_use_the_outlet_theme(self):
         for outlet, export in (('samizdata', 'samizdata'), ('zdg', 'zdg')):
@@ -146,8 +157,9 @@ class GenerationTests(unittest.TestCase):
         charts = project / 'charts'
         package = json.loads((charts / 'package.json').read_text())
         self.assertEqual(package['name'], 'plain-test-charts')
-        self.assertEqual(package['dependencies']['@samizdata/mozaic'], '^0.2.0')
-        self.assertEqual(package['devDependencies']['@samizdata/mozaic-cli'], '^0.2.0')
+        version = self.copier_default('mozaic_version')
+        self.assertEqual(package['dependencies']['@samizdata/mozaic'], f'^{version}')
+        self.assertEqual(package['devDependencies']['@samizdata/mozaic-cli'], f'^{version}')
         example = (charts / 'src/charts/example/Chart.svelte').read_text()
         self.assertIn("from '@samizdata/mozaic/frame'", example)
         self.assertNotIn("from 'mozaic/", example)
@@ -162,6 +174,28 @@ class GenerationTests(unittest.TestCase):
         self.assertIn('## Charts', (project / 'README.md').read_text())
         # The root .gitignore must not hide the charts' src/lib.
         self.assertIn('/lib/', (project / '.gitignore').read_text().splitlines())
+        workflow = (project / '.github/workflows/charts.yml').read_text()
+        self.assertIn('working-directory: charts', workflow)
+        self.assertIn('path: charts/build', workflow)
+        self.assertIn('${{ steps.deployment.outputs.page_url }}', workflow)
+
+    def test_mozaic_charts_link_a_local_checkout(self):
+        project = self.generate('charts=mozaic', 'mozaic_path=/opt/mozaic')
+        package = json.loads((project / 'charts/package.json').read_text())
+        self.assertEqual(package['dependencies']['@samizdata/mozaic'], 'link:/opt/mozaic/packages/mozaic')
+        self.assertEqual(package['devDependencies']['@samizdata/mozaic-cli'], 'link:/opt/mozaic/packages/cli')
+
+    def test_relative_mozaic_path_is_rejected(self):
+        result = self.generate('charts=mozaic', 'mozaic_path=../mozaic', check=False)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn('Use an absolute path', result.stderr)
+
+    def test_mozaic_version_matches_mozaic(self):
+        source = ROOT.parent / 'mozaic/packages/mozaic/package.json'
+        if not source.is_file():
+            self.skipTest('no sibling mozaic checkout')
+        released = json.loads(source.read_text())['version']
+        self.assertEqual(self.copier_default('mozaic_version'), released)
 
     def test_mozaic_charts_without_outlet_use_base(self):
         project = self.generate('outlet=none', 'charts=mozaic', 'chart_locales=en,ro')

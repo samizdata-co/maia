@@ -6,7 +6,7 @@ description: Build or change a chart in this project's charts/ folder (mozaic). 
 # Build a mozaic chart
 
 1. **Data.** Find or create the tidy CSV in `charts/data/`. If it does not exist, add a step to
-   the project's `etl/` scripts or notebook that writes it, and run it.
+   the project's `etl/` scripts or `docs/` notebook that writes it, and run it.
 2. **Form.** Pick the chart from what the data must show: magnitude → bars; change over time →
    lines; parts of a whole → stacked bars (`StackedBarChart`) or a waffle; parts of a whole across groups of different sizes → mosaic (`MosaicChart`); distribution → beeswarm or histogram; where a reader's own value sits in published percentiles ("how do you compare?") → `PercentileChart`;
    geography → choropleth; two values per item → dumbbell or slope; one item at two dates → arrow plot (`ArrowChart`), or bars

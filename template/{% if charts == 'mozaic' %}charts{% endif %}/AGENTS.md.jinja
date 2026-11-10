@@ -6,13 +6,19 @@ Languages: see `mozaic.config.ts`.
 
 ## Where things go
 
-- Data wrangling stays in the project's `etl/` and notebooks. Write the tidy CSV each chart
+- Data wrangling stays in the project's `etl/` scripts and `docs/` notebooks. Write the tidy CSV each chart
   needs to `charts/data/` (committed; `data/processed/` is not).
 - Charts: `src/charts/<slug>/` with `Chart.svelte` (the chart), `data.ts` (load and type the
   CSV), `messages.ts` (every user-facing string, per language). Register in `src/charts/index.ts`.
 - Do not edit `src/routes/embed/**`, `manifest.json` or `embed.js` routes; they are generic.
 {%- if outlet != 'none' %}
 - Do not edit `src/lib/brands/`: it is a copy of the outlet's brand, updated by `copier update`.
+{%- endif %}
+- Publishing: `../.github/workflows/charts.yml` builds this folder and deploys `build/` to GitHub
+  Pages on every push to `main` that changes `charts/`. Set `baseUrl` in `mozaic.config.ts`.
+{%- if mozaic_path %}
+- mozaic is linked from `{{ mozaic_path }}`. A missing mark or option belongs in the library
+  there (with a test and a gallery example), not in this project; run `pnpm --filter mozaic package` after changing it.
 {%- endif %}
 
 ## Chart conventions

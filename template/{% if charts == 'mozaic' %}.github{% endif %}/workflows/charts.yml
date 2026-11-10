@@ -1,0 +1,48 @@
+# Builds the chart embeds in charts/ and deploys them to GitHub Pages when they change on main.
+# Enable Pages (Settings → Pages → Source: GitHub Actions) before the first run, and commit
+# charts/pnpm-lock.yaml. Pages serves the site from a sub-path; embed pages use relative links,
+# so that works.
+name: Charts
+
+on:
+  push:
+    branches: [main]
+    paths: ['charts/**', '.github/workflows/charts.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    defaults:
+      run:
+        working-directory: charts
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 12
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+          cache-dependency-path: charts/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm check
+      - run: pnpm build
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: charts/build
+      - id: deployment
+        uses: actions/deploy-pages@v4

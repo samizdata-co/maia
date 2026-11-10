@@ -40,7 +40,17 @@ To add an outlet, create its brand repository (with `_brand.yml`, a Quarto exten
 
 ## Charts
 
-`charts: mozaic` adds a `charts/` folder with [mozaic](https://github.com/samizdata-co/mozaic) charts built as static embeds, a preview page and print export, plus a Claude Code skill for building charts. Its house style is the outlet's mozaic theme, copied from the brand's `datavis/mozaic/` folder into `charts/src/lib/brands/<outlet>/` (mozaic's neutral `base` for no outlet). `chart_locales` sets the chart languages (ZdG defaults to `ro`, the others to `en`). The charts install mozaic from npm (`@samizdata/mozaic`). With `--trust`, Copier runs `pnpm install` in `charts/`.
+`charts: mozaic` adds a `charts/` folder with [mozaic](https://github.com/samizdata-co/mozaic) charts built as static embeds, a preview page and print export, plus a Claude Code skill for building charts. Its house style is the outlet's mozaic theme, copied from the brand's `datavis/mozaic/` folder into `charts/src/lib/brands/<outlet>/` (mozaic's neutral `base` for no outlet). `chart_locales` sets the chart languages (ZdG defaults to `ro`, the others to `en`). The charts install mozaic from npm (`@samizdata/mozaic`), at the version in `mozaic_version` in `copier.yml`. With `--trust`, Copier runs `pnpm install` in `charts/`. `.github/workflows/charts.yml` deploys the built embeds to GitHub Pages.
+
+To develop mozaic itself from a project, link a local checkout instead of npm (pass the same `--data` to `copier update`, or it switches back to npm):
+
+``` bash
+uvx copier copy --trust --data charts=mozaic --data mozaic_path=$HOME/Projects/mozaic gh:samizdata-co/maia my-project
+```
+
+and build the library once in the checkout (`pnpm --filter mozaic package`).
+
+After each mozaic release, set `mozaic_version` to the new version and release the template; `test_mozaic_version_matches_mozaic` fails while they differ (with a sibling mozaic checkout).
 
 When a brand releases a new mozaic theme, copy its `datavis/mozaic/*.ts` over the template's copy; the tests check that the copies match sibling checkouts of the brand repositories.
 

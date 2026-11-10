@@ -25,7 +25,7 @@
 {% if charts == 'mozaic' %}
 ## Charts
 
-`charts/` holds the [mozaic](https://github.com/samizdata-co/mozaic) charts: one folder per chart in `charts/src/charts/`, built as static embeds and print files. It installs mozaic from npm (`@samizdata/mozaic`).
+`charts/` holds the [mozaic](https://github.com/samizdata-co/mozaic) charts: one folder per chart in `charts/src/charts/`, built as static embeds and print files. It installs mozaic {% if mozaic_path %}from the local checkout in `{{ mozaic_path }}` (build it there with `pnpm --filter mozaic package`){% else %}from npm (`@samizdata/mozaic`){% endif %}.
 
 ```bash
 cd charts
@@ -37,6 +37,10 @@ pnpm export    # SVG, PDF and PNG in charts/exports/ (needs a Chromium)
 ```
 
 Write the data each chart needs to `charts/data/` (committed; `data/processed/` is not). The house style is `charts/src/lib/theme.ts`{% if outlet != 'none' %}, which uses the copy of the outlet's brand in `charts/src/lib/brands/` (do not edit it; `copier update` brings new brand releases){% endif %}. See `charts/AGENTS.md` for the conventions.
+
+### Publishing charts
+
+`.github/workflows/charts.yml` builds `charts/` and deploys it to GitHub Pages whenever it changes on `main`. Enable Pages (Settings → Pages → Source: GitHub Actions) and commit `charts/pnpm-lock.yaml` first. Set `baseUrl` in `charts/mozaic.config.ts` to the public URL, so the preview page shows the right embed codes. Each chart is at `embed/<slug>/<locale>/`; its embed code is an iframe plus `embed.js`, which resizes the iframe to fit the chart.
 {% endif %}
 ## Tracking time
 

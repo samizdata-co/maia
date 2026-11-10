@@ -76,6 +76,24 @@ chart_locales:
     Use en, ro and ru, separated by commas.
     {% endif %}{% endfor %}
 
+# mozaic release the charts install from npm. Not asked; bump it after each mozaic release
+# (tests/test_generation.py checks it against a sibling mozaic checkout).
+mozaic_version:
+  type: str
+  default: "0.6.0"
+  when: false
+
+# A local mozaic checkout to link instead of npm, for developing the library from a project.
+# Not asked; pass it with `--data mozaic_path=/absolute/path/to/mozaic`.
+mozaic_path:
+  type: str
+  default: ""
+  when: false
+  validator: >-
+    {% if mozaic_path and not mozaic_path.startswith('/') %}
+    Use an absolute path to the mozaic repository.
+    {% endif %}
+
 _tasks:
   - command: npm install
     when: "{{ notebook == 'Observable' }}"

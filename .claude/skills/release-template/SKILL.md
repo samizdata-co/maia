@@ -85,6 +85,17 @@ Each outlet's brand is vendored under conditional names, so only the chosen outl
 
 To bump a Quarto extension, install it into a scratch Quarto project (`quarto add samizdata-co/brand@<tag>` or `ziaruldegarda/brand@<tag>`) and copy the installed folder over the template's. To bump a mozaic theme, copy the brand's `datavis/mozaic/*.ts` over the template's copy (`test_vendored_mozaic_themes_match_brands` compares them with sibling brand checkouts). Then update the pinned versions in the brand tests and README.md, and release as a minor version. This is the main reason the template moved to Copier: existing projects pick up brand updates with `copier update`.
 
+## mozaic updates
+
+maia is the only scaffolder for mozaic projects (mozaic's own `create-mozaic` was retired), so `charts/` must follow each mozaic release:
+
+- Set `mozaic_version` in `copier.yml` to the released version. `test_mozaic_version_matches_mozaic` compares it with a sibling `../mozaic` checkout and fails while they differ.
+- When mozaic changes what a chart project needs (the example chart, the embed routes, `vite.config.ts`, conventions for agents), port it into `template/{% if charts == 'mozaic' %}charts{% endif %}/` and the `mozaic-chart` skill. mozaic's release notes (`packages/mozaic/CHANGELOG.md`) say what changed.
+- Generate a charts project and run `pnpm install && pnpm check && pnpm build` in its `charts/` before tagging.
+- Release as a minor version (a patch for a mozaic patch release with no template changes).
+
+`mozaic_path` (hidden; `--data mozaic_path=/abs/path/to/mozaic`) links a local checkout instead of npm. It is not recorded in `.copier-answers.yml`, so linked projects pass it again on `copier update`.
+
 ## Things that trip people up
 
 - Copier refuses to run `_tasks` without `--trust`. Use `--skip-tasks` in checks that don't need them.
