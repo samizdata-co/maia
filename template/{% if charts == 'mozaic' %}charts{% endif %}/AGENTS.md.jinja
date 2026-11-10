@@ -29,8 +29,18 @@ Languages: see `mozaic.config.ts`.
 - Draw in `<Svg>`; tooltips go in `<Html>`. Use {% raw %}`{#snippet children(plot)}`{% endraw %} on `<Plot>`
   to get ranged scales for tooltip positions.
 - Colours: `style.palettes` (the theme each chart receives); assign categorical colours by
-  entity in order. Text uses text colours (`var(--mz-color-text)`), never data colours.
-- Every chart needs `alt` text, a legend for 2+ series, and strings in every language.
+  entity in order, grey (`semantic.context`) for everything the chart is not about. Text uses
+  text colours (`var(--mz-color-text)`), except that, as in Datawrapper, a direct label, an
+  annotation or a key phrase in the subtitle may take its series colour when it reaches 4.5:1
+  (`LineEndLabels colorText`, `Label`/`Callout color`, or `readableColor()` from `@samizdata/mozaic/styles`).
+- Every chart needs `alt` text (chart type, data, takeaway), a headline that states one finding
+  true of the data, a subtitle with what is measured, the unit, place and period, a source, and
+  strings in every language.
+- Label 2+ series directly (`LineEndLabels`, labels on bars and areas) instead of with a
+  legend; use `Legend` or `Key` for colour scales, labels that can't fit, and narrow widths.
+- Annotate what the headline depends on (the key value, outliers, events) next to the data, with
+  at most two text sizes; at narrow widths move annotations below the chart, never shrink text.
+- Bars, columns and areas start at zero; lines needn't. No rotated tick labels: use horizontal bars.
 - Use the theme's breakpoints (`plot.breakpoint`) for small-screen layouts.
 - Name the y unit once, on the top tick: `<AxisY unit="lei/m³" />`.
 - Tooltips: `<Tooltip title items>`, one item per series (label, value, colour), so values line up.

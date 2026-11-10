@@ -21,7 +21,12 @@ description: Build or change a chart in this project's charts/ folder (mozaic). 
    Prefer existing marks (`Bars`, `Line`, `Area`, `Points`, `Rects`, `Text`, `GeoPath`, `Treemap`,
    `Waffle`, `Dumbbell`, `Slope`, `Beeswarm`) and annotations (`Callout`, `RefLine`, `RefBand`,
    `Label`). Write raw SVG with `usePlot()` scales only when no mark fits.
-5. **Register** the chart in `src/charts/index.ts` (slug, title, component, print widths).
-6. **Check.** Run `pnpm check`. Open the preview with `pnpm dev` and look at the chart at 320 px
+5. **Words and labels.** The title states the finding (check every number in it against the data);
+   the subtitle gives what is measured, the unit, place and period. Label series directly
+   (`LineEndLabels colorText`, labels on bars) rather than with a legend, and annotate the values
+   and events the headline depends on (`Callout`, `Label`, `RefLine`), in the series colour
+   (`color`) where it helps. Bars start at zero.
+6. **Register** the chart in `src/charts/index.ts` (slug, title, component, print widths).
+7. **Check.** Run `pnpm check`. Open the preview with `pnpm dev` and look at the chart at 320 px
    and 1000 px, in every language and in print; fix overlaps, clipped labels and empty states.
-7. **Build.** `pnpm build` must succeed; `pnpm export` produces print files when needed.
+8. **Build.** `pnpm build` must succeed; `pnpm export` produces print files when needed.
