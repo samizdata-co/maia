@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { scaleLinear } from 'd3-scale';
 	import { extent, max } from 'd3-array';
-	import { Chart, Header, Title, Subtitle, Footer, Notes, Source, DataTable } from '@samizdata/mozaic/frame';
+	import { Chart, Header, Title, Subtitle, Footer, Notes, Source } from '@samizdata/mozaic/frame';
 	import { Plot, Svg, Html } from '@samizdata/mozaic/core';
 	import { Line, LineEndLabels, Points } from '@samizdata/mozaic/marks';
 	import { AxisX, AxisY, GridY, Legend } from '@samizdata/mozaic/guides';
@@ -73,12 +73,20 @@
 			</Svg>
 			<Html>
 				{#if hoverYear !== null}
-					<Tooltip x={plot.x(hoverYear) ?? 0} y={plot.height / 2}>
-						<strong>{hoverYear}</strong>
-						{#each rows.filter((d) => d.year === hoverYear).toSorted((a, b) => b.value - a.value) as d (d.region)}
-							<div>{t.regions[d.region] ?? d.region}: <strong>{fmt.number(d.value)}</strong></div>
-						{/each}
-					</Tooltip>
+					<Tooltip
+						x={plot.x(hoverYear) ?? 0}
+						y={plot.height / 2}
+						title={String(hoverYear)}
+						items={rows
+							.filter((d) => d.year === hoverYear)
+							.toSorted((a, b) => b.value - a.value)
+							.map((d) => ({
+								label: t.regions[d.region] ?? d.region,
+								value: fmt.number(d.value),
+								color: color[d.region],
+								shape: 'line'
+							}))}
+					/>
 				{/if}
 			</Html>
 		{/snippet}
@@ -88,13 +96,4 @@
 		<Notes>{t.notes}</Notes>
 		<Source>{t.source}</Source>
 	</Footer>
-	<DataTable
-		data={rows}
-		columns={[
-			{ key: 'region', label: t.region, value: (d: Row) => t.regions[d.region] ?? d.region },
-			{ key: 'year', label: t.year, value: (d: Row) => d.year, format: String },
-			{ key: 'value', label: t.value, value: (d: Row) => d.value }
-		]}
-		maxRows={10}
-	/>
 </Chart>

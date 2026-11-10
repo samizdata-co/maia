@@ -26,6 +26,12 @@ Languages: see `mozaic.config.ts`.
   entity in order. Text uses text colours (`var(--mz-color-text)`), never data colours.
 - Every chart needs `alt` text, a legend for 2+ series, and strings in every language.
 - Use the theme's breakpoints (`plot.breakpoint`) for small-screen layouts.
+- Name the y unit once, on the top tick: `<AxisY unit="lei/m³" />`.
+- Tooltips: `<Tooltip title items>`, one item per series (label, value, colour), so values line up.
+- Event markers on a time axis: `<RefLine x={date} label="…" dotted labelY={-30} />`, labels above the plot.
+- Link each source to its data or document: `<Source sources={[{ label: 'ANRE', href: '…' }, …]} />`
+  (recipes take the same list as `source`).
+- No `<DataTable>` ("Show the data" button) unless asked for.
 
 ## Before you finish
 
