@@ -80,7 +80,7 @@ chart_locales:
 # (tests/test_generation.py checks it against a sibling mozaic checkout).
 mozaic_version:
   type: str
-  default: "0.10.0"
+  default: "0.12.0"
   when: false
 
 # A local mozaic checkout to link instead of npm, for developing the library from a project.

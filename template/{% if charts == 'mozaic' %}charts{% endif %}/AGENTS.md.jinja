@@ -41,8 +41,15 @@ Languages: see `mozaic.config.ts`.
 - Annotate what the headline depends on (the key value, outliers, events) next to the data, with
   at most two text sizes; at narrow widths move annotations below the chart, never shrink text.
 - Bars, columns and areas start at zero; lines needn't. No rotated tick labels: use horizontal bars.
+- Money always has two decimals, and whole amounts none: `createLocale(locale).money` (26.14, 12.30, 26).
+  No value shows `.0` or `.00`: for other precisions use `createLocale(locale).decimals(n)`.
+- Every tooltip value has its unit (recipes' `unit`, or `xUnit`/`yUnit` on `ScatterChart`).
+- Strips, beeswarms and scatters say what their axes mean: `directions` arrows ("Richer countries →")
+  or `ScatterChart` `quadrants`. Countries get circular flags (`flag`, with the flags a chart uses
+  imported from `@samizdata/mozaic/flags`).
 - Use the theme's breakpoints (`plot.breakpoint`) for small-screen layouts.
-- Name the y unit once, on the top tick: `<AxisY unit="lei/m³" />`.
+- The last tick label of every value axis carries the unit: `<AxisY unit="lei/m³" />` (top tick),
+  `<AxisX unit="€ a year" />` (last labelled tick); recipes take `unit` / `xUnit` / `yUnit`.
 - Tooltips: `<Tooltip title items>`, one item per series (label, value, colour), so values line up.
 - Event markers on a time axis: `<RefLine x={date} label="…" dotted labelY={-30} />`, labels above the plot.
 - Link each source to its data or document: `<Source sources={[{ label: 'ANRE', href: '…' }, …]} />`
