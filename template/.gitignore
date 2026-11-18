@@ -134,7 +134,7 @@ coverage.xml
 *.py,cover
 .hypothesis/
 .pytest_cache/
-cover/
+# cover/  (off: cover/ and output/cover/ hold the cover image)
 
 # Translations
 *.mo

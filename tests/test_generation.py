@@ -177,6 +177,8 @@ class GenerationTests(unittest.TestCase):
         self.assertTrue((cover / 'SKILL.md').is_file())
         self.assertTrue((cover / 'scripts/cover.py').is_file())
         self.assertEqual(len(list((cover / 'assets/examples').glob('*.toml'))), 3)
+        # The skill keeps its files in cover/ and output/cover/, so git must not ignore them.
+        self.assertNotIn('cover/', (project / '.gitignore').read_text().splitlines())
         self.assertIn('## Charts', (project / 'README.md').read_text())
         # The root .gitignore must not hide the charts' src/lib.
         self.assertIn('/lib/', (project / '.gitignore').read_text().splitlines())
