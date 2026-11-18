@@ -40,7 +40,7 @@ To add an outlet, create its brand repository (with `_brand.yml`, a Quarto exten
 
 ## Charts
 
-`charts: mozaic` adds a `charts/` folder with [mozaic](https://github.com/samizdata-co/mozaic) charts built as static embeds, a preview page and print export, plus a Claude Code skill for building charts. Its house style is the outlet's mozaic theme, copied from the brand's `datavis/mozaic/` folder into `charts/src/lib/brands/<outlet>/` (mozaic's neutral `base` for no outlet). `chart_locales` sets the chart languages (ZdG defaults to `ro`, the others to `en`). The charts install mozaic from npm (`@samizdata/mozaic`), at the version in `mozaic_version` in `copier.yml`. With `--trust`, Copier runs `pnpm install` in `charts/`. `.github/workflows/charts.yml` deploys the built embeds to GitHub Pages.
+`charts: mozaic` adds a `charts/` folder with [mozaic](https://github.com/samizdata-co/mozaic) charts built as static embeds, a preview page and print export, plus Claude Code skills for building charts and for cover images (an FT-style collage of a photo and the story's data lines, `.claude/skills/cover-image`). Its house style is the outlet's mozaic theme, copied from the brand's `datavis/mozaic/` folder into `charts/src/lib/brands/<outlet>/` (mozaic's neutral `base` for no outlet). `chart_locales` sets the chart languages (ZdG defaults to `ro`, the others to `en`). The charts install mozaic from npm (`@samizdata/mozaic`), at the version in `mozaic_version` in `copier.yml`. With `--trust`, Copier runs `pnpm install` in `charts/`. `.github/workflows/charts.yml` deploys the built embeds to GitHub Pages.
 
 To develop mozaic itself from a project, link a local checkout instead of npm (pass the same `--data` to `copier update`, or it switches back to npm):
 

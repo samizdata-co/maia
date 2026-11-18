@@ -1,0 +1,56 @@
+# A whole photo in calm colour, with the lines over and under one object in it. From a gas-price
+# story: a gas installation behind a big yellow pipe painted "GAZ". The European price (red)
+# dips behind the pipe in the cheap years and rises above it when prices soar; Moldova's
+# purchase cost (blue) runs in front. Copy to cover/<name>.toml and adapt.
+
+[canvas]
+output = "output/cover/cover.jpg"
+seed = 11
+
+[photo]
+# 1200 x 675 originally; upscaled 4x with Real-ESRGAN:
+# realesrgan-ncnn-vulkan -i gas-pipe.jpg -o gas-pipe-4x.png -n realesrgan-x4plus -t 64
+file = "cover/source/gas-pipe-4x.png"
+mode = "scene"
+style = "colour"
+saturation_subject = 0.9             # the pipe stays yellow
+saturation_rest = 0.62               # the installation recedes
+haze = 0.18
+grain = 0.02
+sky = "photo"                        # keep the real sky
+
+[occluder]
+method = "band"
+hue = [30, 65]                       # the pipe's pale yellow, not the saturated pipes behind
+saturation = [0.25, 0.82]
+value = [0.3, 1]
+guess_top = [1123, 0.014]            # rough top edge: y = 1123 + 0.014 x
+bottom_from = 60
+
+[scale]
+x_from = "2020-11-01"
+x_to = "2026-10-01"
+px_from = -160
+px_to = 3580
+level = 10                           # 10 lei sits just under the pipe's top edge,
+level_below = 50                     # 50 px down, at the canvas centre
+px_per_unit = 46                     # kept low so cheap years stay inside the thin right end
+
+[[line]]
+name = "europe"
+csv = "charts/data/tariff_vs_europe.csv"
+where = { series = "europe" }
+until = "2026-10-01"
+colour = "#ff595a"
+dots = "end"
+front = "none"
+
+[[line]]
+name = "purchase"
+csv = "charts/data/tariff_vs_europe.csv"
+where = { series = "purchase" }
+until = "2026-10-01"
+colour = "#0158b5"
+curve = "step"
+dots = "end"
+front = "all"

@@ -1,0 +1,55 @@
+# A whole photo in black and white, the occluder tinted, the sky replaced with paper. Same story
+# and idea as scene.toml, on a close-up of the pipe (a 4288 x 2848 photo, 3:2).
+
+[canvas]
+output = "output/cover/cover.jpg"
+seed = 11
+
+[photo]
+file = "cover/source/gas-pipe-close.jpg"
+crop = [0, 380, 4288, 2412]          # a 16:9 band, 380 px from the top
+mode = "scene"
+style = "mono"
+tint = "#eed680"                     # the pipe keeps a muted yellow
+levels = [0.04, 0.9]
+s_curve = 0.6
+grain = 0.03
+sky = "paper"
+sky_saturation = [0.3, 1.0]          # this sky is darker and more saturated:
+sky_value = 0.25                     # any blue counts (there are no blue objects)
+
+[occluder]
+method = "band"
+hue = [30, 65]
+saturation = [0.25, 0.82]
+value = [0.3, 1]
+guess_top = [722, 0.0534]
+bottom_from = 300                    # past the big lettering
+
+[scale]
+x_from = "2020-11-01"
+x_to = "2026-10-01"
+px_from = -160
+px_to = 3580
+level = 10
+level_below = 90
+px_per_unit = 56
+
+[[line]]
+name = "europe"
+csv = "charts/data/tariff_vs_europe.csv"
+where = { series = "europe" }
+until = "2026-10-01"
+colour = "#ff595a"
+dots = "end"
+front = "none"
+
+[[line]]
+name = "purchase"
+csv = "charts/data/tariff_vs_europe.csv"
+where = { series = "purchase" }
+until = "2026-10-01"
+colour = "#0158b5"
+curve = "step"
+dots = "end"
+front = "all"

@@ -173,6 +173,10 @@ class GenerationTests(unittest.TestCase):
         self.assertTrue((charts / 'src/routes/embed/[chart]/[locale]/+page.svelte').is_file())
         self.assertIn('{#snippet children(plot)}', (charts / 'AGENTS.md').read_text())
         self.assertTrue((project / '.claude/skills/mozaic-chart/SKILL.md').is_file())
+        cover = project / '.claude/skills/cover-image'
+        self.assertTrue((cover / 'SKILL.md').is_file())
+        self.assertTrue((cover / 'scripts/cover.py').is_file())
+        self.assertEqual(len(list((cover / 'assets/examples').glob('*.toml'))), 3)
         self.assertIn('## Charts', (project / 'README.md').read_text())
         # The root .gitignore must not hide the charts' src/lib.
         self.assertIn('/lib/', (project / '.gitignore').read_text().splitlines())

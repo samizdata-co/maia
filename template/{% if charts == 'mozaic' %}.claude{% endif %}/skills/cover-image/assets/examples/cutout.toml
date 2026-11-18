@@ -1,0 +1,49 @@
+# A cut-out object on the paper, lines threading it. From a gas-price story: a black cast-iron
+# radiator, the gas purchase cost in Moldova's tariff (blue, steps) and the European gas price
+# (red). Copy to cover/<name>.toml and change the photo, the lines and the scale.
+
+[canvas]
+output = "output/cover/cover.jpg"
+
+[photo]
+file = "cover/source/radiator.png"   # transparent PNG
+mode = "cutout"
+style = "mono"
+height = 1460                        # px of the object's opaque part
+centre_x = 1920
+floor = 1975                         # y of its lowest pixel
+levels = [0, 0.32]                   # a black object: stretch its shadows into greys
+gamma = 0.85
+s_curve = 1.0
+grain = 0.035
+
+[scale]
+x_from = "2020-11-01"
+x_to = "2026-10-01"
+px_from = -160                       # start off the left edge
+px_to = 3580                         # end dots inside the right edge
+zero = 2010                          # y of value 0
+px_per_unit = 56                     # so recent prices cross the middle of the columns
+
+# One switch per line, inside a see-through gap (x = 2519, from `check`) right of every dot on
+# the radiator: blue in front of the left part, red in front of the right part.
+
+[[line]]
+name = "europe"
+csv = "charts/data/tariff_vs_europe.csv"
+where = { series = "europe" }
+until = "2026-10-01"
+colour = "#ff595a"
+curve = "monotone"
+dots = "end"
+front = [[2519, 3840]]
+
+[[line]]
+name = "purchase"
+csv = "charts/data/tariff_vs_europe.csv"
+where = { series = "purchase" }
+until = "2026-10-01"
+colour = "#0158b5"
+curve = "step"
+dots = "end"
+front = [[0, 2519]]
