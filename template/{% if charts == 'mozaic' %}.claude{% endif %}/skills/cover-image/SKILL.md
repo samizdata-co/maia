@@ -1,6 +1,6 @@
 ---
 name: cover-image
-description: Make a cover image for a story in this project, in the FT collage style — a treated photo of an object that stands for the story (a radiator, a gas pipe, a wallet) with thick lines of the story's real data weaving through it, in front of some parts and behind others. Use this whenever the user asks for a cover, thumbnail, header, hero or featured image, lead art, social or OG image, or "an image for the article", or wants a photo combined with chart lines or data, even if they don't say "collage" or name a chart.
+description: Make a cover image for a story in this project, in the FT collage style — a treated photo of an object that stands for the story (a radiator, a gas pipe, a wallet) with thick lines of the story's real data weaving through it, in front of some parts and behind others. Use this whenever the user asks for a cover, thumbnail, header, hero or featured image, lead art, OG or link-preview image, or "an image for the article", or wants a photo combined with chart lines or data, even if they don't say "collage" or name a chart. Not for the charts themselves at social media sizes (social-images).
 ---
 
 # Cover image

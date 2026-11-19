@@ -177,15 +177,18 @@ class GenerationTests(unittest.TestCase):
         self.assertTrue((cover / 'SKILL.md').is_file())
         self.assertTrue((cover / 'scripts/cover.py').is_file())
         self.assertEqual(len(list((cover / 'assets/examples').glob('*.toml'))), 3)
+        social = project / '.claude/skills/social-images'
+        self.assertTrue((social / 'SKILL.md').is_file())
+        self.assertTrue((social / 'scripts/social.ts').is_file())
+        self.assertEqual(package['scripts']['social'], 'node ../.claude/skills/social-images/scripts/social.ts')
+        self.assertIn('social: {', config)
         # The skill keeps its files in cover/ and output/cover/, so git must not ignore them.
         self.assertNotIn('cover/', (project / '.gitignore').read_text().splitlines())
         self.assertIn('## Charts', (project / 'README.md').read_text())
         # The root .gitignore must not hide the charts' src/lib.
         self.assertIn('/lib/', (project / '.gitignore').read_text().splitlines())
-        workflow = (project / '.github/workflows/charts.yml').read_text()
-        self.assertIn('working-directory: charts', workflow)
-        self.assertIn('path: charts/build', workflow)
-        self.assertIn('${{ steps.deployment.outputs.page_url }}', workflow)
+        # The charts are built locally and hosted anywhere: no GitHub workflow, so commits show no failed runs.
+        self.assertFalse((project / '.github').exists())
 
     def test_mozaic_charts_link_a_local_checkout(self):
         project = self.generate('charts=mozaic', 'mozaic_path=/opt/mozaic')

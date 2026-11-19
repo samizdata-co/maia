@@ -11,5 +11,12 @@ export const config = {
 	 * Public URL where `build/` will be deployed, with a trailing slash, e.g.
 	 * `https://charts.example.com/{{ project_slug }}/`. Used for embed codes.
 	 */
-	baseUrl: ''
+	baseUrl: '',
+	/**
+	 * Social media images (`pnpm social`, the social-images skill). `widths`: chart widths in px that fit a
+	 * format better than the automatic choice, per chart and format, e.g. `{ prices: { landscape: 800 } }`.
+	 */
+	social: {
+		widths: {} as Record<string, Record<string, number>>
+	}
 };

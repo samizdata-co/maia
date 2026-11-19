@@ -40,7 +40,7 @@ Write the data each chart needs to `charts/data/` (committed; `data/processed/` 
 
 ### Publishing charts
 
-`.github/workflows/charts.yml` builds `charts/` and deploys it to GitHub Pages whenever it changes on `main`. Enable Pages (Settings → Pages → Source: GitHub Actions) and commit `charts/pnpm-lock.yaml` first. Set `baseUrl` in `charts/mozaic.config.ts` to the public URL, so the preview page shows the right embed codes. Each chart is at `embed/<slug>/<locale>/`; its embed code is an iframe plus `embed.js`, which resizes the iframe to fit the chart.
+`pnpm build` in `charts/` writes the charts as static files to `charts/build/`; upload that folder to any static host. Set `baseUrl` in `charts/mozaic.config.ts` to the public URL, so the preview page shows the right embed codes. Each chart is at `embed/<slug>/<locale>/`; its embed code is an iframe plus `embed.js`, which resizes the iframe to fit the chart.
 {% endif %}
 ## Tracking time
 
