@@ -9,13 +9,14 @@ description: Build or change a chart in this project's charts/ folder (mozaic). 
    the project's `etl/` scripts or `docs/` notebook that writes it, and run it.
 2. **Form.** Pick the chart from what the data must show: magnitude → bars; change over time →
    lines; parts of a whole → stacked bars (`StackedBarChart`) or a waffle; parts of a whole across groups of different sizes → mosaic (`MosaicChart`); distribution → beeswarm or histogram; where a reader's own value sits in published percentiles ("how do you compare?") → `PercentileChart`; many items on one value (countries by price) → strip (`StripChart`);
-   geography → choropleth; two values per item → dumbbell or slope; one item at two dates → arrow plot (`ArrowChart`), or bars
+   geography → choropleth; the areas several events reached (each quake's strong shaking, each flood), overlaid by date → `FootprintMap`,
+   with the areas drawn from point measurements by `contourPoints` (`@samizdata/mozaic/transforms`); two values per item → dumbbell or slope; one item at two dates → arrow plot (`ArrowChart`), or bars
    with a dot for the earlier date (`BarDotChart`) when the latest value matters most. One number → no chart.
 3. **Files.** Work in `charts/`. Copy `src/charts/example/` to `src/charts/<slug>/`. Edit `data.ts` (import the CSV
    with `?raw`, parse with `csvParse(raw, autoType)`, type the rows), `messages.ts` (title,
    subtitle, alt, notes, source per language) and `Chart.svelte`.
 4. **Compose.** If a recipe in `@samizdata/mozaic/recipes` fits (`BarChart`, `ColumnChart`, `LineChart`,
-   `ScatterChart`, `ArrowChart`, `BarDotChart`, `StackedBarChart`, `MosaicChart`, `PercentileChart`, `StripChart`: a beeswarm of dots or flags), wrap it: pass the data, accessors and strings. A new
+   `ScatterChart`, `ArrowChart`, `BarDotChart`, `StackedBarChart`, `MosaicChart`, `PercentileChart`, `StripChart`: a beeswarm of dots or flags, `FootprintMap`), wrap it: pass the data, accessors and strings. A new
    form that other charts could reuse goes into mozaic as a recipe, not into this project.
    Otherwise use `Chart` / `Header` / `Plot` / `Svg` / marks / guides / `Footer` from mozaic.
    Prefer existing marks (`Bars`, `Line`, `Area`, `Points`, `Rects`, `Text`, `GeoPath`, `Treemap`,
