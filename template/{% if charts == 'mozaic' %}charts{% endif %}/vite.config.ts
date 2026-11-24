@@ -8,7 +8,8 @@ export default defineConfig({
 			compilerOptions: {
 				runes: ({ filename }) => (filename.split(/[/\\]/).includes('node_modules') ? undefined : true)
 			},
-			adapter: adapter(),
+			// Next to the rendered docs in ../output/ (Quarto's output-dir), so the whole story publishes from one folder.
+			adapter: adapter({ pages: '../output/charts/build' }),
 			prerender: {
 				// The manifest and host script are not linked from any page.
 				entries: ['*', '/embed/manifest.json', '/embed.js']

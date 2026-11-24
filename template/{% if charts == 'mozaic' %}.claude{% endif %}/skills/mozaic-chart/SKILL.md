@@ -35,4 +35,17 @@ description: Build or change a chart in this project's charts/ folder (mozaic). 
 6. **Register** the chart in `src/charts/index.ts` (slug, title, component, print widths).
 7. **Check.** Run `pnpm check`. Open the preview with `pnpm dev` and look at the chart at 320 px
    and 1000 px, in every language and in print; fix overlaps, clipped labels and empty states.
-8. **Build.** `pnpm build` must succeed; `pnpm export` produces print files when needed.
+8. **Build.** `pnpm build` must succeed (it writes `../output/charts/build/`); `pnpm export` produces print
+   files in `../output/charts/exports/` when needed.
+
+## Embedding
+
+Charts are embedded as iframes (`embed/<slug>/<locale>/` plus `embed.js`); that is the default and works on
+any site. Only if the user asks for it, and the publisher's CMS allows scripts in articles, add the optional
+web component (`<mozaic-chart project chart locale>`, drawn in a Shadow DOM in the host page): an entry
+`src/element.ts` that calls `defineChartElements({ project: config.project, theme, locales: config.locales, charts })`
+from `@samizdata/mozaic/embed`, a `vite.element.config.ts` that exports
+`defineConfig(elementConfig({ outDir: '../output/charts/build' }))` from `@samizdata/mozaic/vite`, and
+`"build": "vite build && vite build -c vite.element.config.ts"`. That writes `element.js` next to `embed.js`;
+`elementCode()` writes the snippet. It runs the project's code in the publisher's page and needs JavaScript,
+so say so, and keep the iframe codes too. Details: the embedding guide in the mozaic docs.

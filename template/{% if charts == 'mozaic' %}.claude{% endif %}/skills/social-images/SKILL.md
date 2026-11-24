@@ -5,7 +5,7 @@ description: Export this project's mozaic charts as PNGs sized for social media 
 
 # Social media images of the charts
 
-`scripts/social.ts` renders each chart from its embed page in `charts/build/` with a headless Chromium
+`scripts/social.ts` renders each chart from its embed page in `output/charts/build/` with a headless Chromium
 and saves a PNG at each platform's exact size to `output/social/<slug>/<locale>/<format>.png`. These are
 for the outlet's own posts; nothing about them belongs in the embeds or the story. Don't add a page,
 route or button for them.
@@ -29,7 +29,7 @@ wide chart. For each file it prints the width, the scale (×) and the share of t
 cd charts && pnpm build
 ```
 
-The script reads `build/`, so a stale build gives stale charts. It warns when `src/` or `data/`
+The script reads `output/charts/build/`, so a stale build gives stale charts. It warns when `src/` or `data/`
 changed after the last build. If the chart data comes from the project's `etl/` or notebooks and
 those changed, rerun them first.
 

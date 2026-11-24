@@ -14,8 +14,11 @@ Languages: see `mozaic.config.ts`.
 {%- if outlet != 'none' %}
 - Do not edit `src/lib/brands/`: it is a copy of the outlet's brand, updated by `copier update`.
 {%- endif %}
-- Publishing: `pnpm build` writes static embeds to `build/`, to upload to any static host. Set
-  `baseUrl` in `mozaic.config.ts` to its public URL.
+- Publishing: `pnpm build` writes static embeds to `../output/charts/build/` (next to the rendered docs in
+  `output/`), to upload to any static host, and `pnpm export` writes print files to `../output/charts/exports/`.
+  Set `baseUrl` in `mozaic.config.ts` to its public URL.
+- Embeds are iframes. A web component embed (`<mozaic-chart>`, `defineChartElements()` and `elementConfig()`
+  from mozaic) is optional: add it only when asked, for a CMS that allows scripts (see the mozaic-chart skill).
 {%- if mozaic_path %}
 - mozaic is linked from `{{ mozaic_path }}`. A missing mark or option belongs in the library
   there (with a test and a gallery example), not in this project; run `pnpm --filter mozaic package` after changing it.

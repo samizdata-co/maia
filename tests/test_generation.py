@@ -161,7 +161,11 @@ class GenerationTests(unittest.TestCase):
         self.assertEqual(package['dependencies']['@samizdata/mozaic'], f'^{version}')
         # The mozaic command ships with @samizdata/mozaic (since 0.7.0).
         self.assertNotIn('@samizdata/mozaic-cli', package['devDependencies'])
-        self.assertEqual(package['scripts']['export'], 'mozaic export build')
+        self.assertEqual(package['scripts']['export'], 'mozaic export ../output/charts/build --out ../output/charts/exports')
+        # Charts build next to the rendered docs, so the whole story publishes from output/.
+        self.assertIn("adapter({ pages: '../output/charts/build' })", (charts / 'vite.config.ts').read_text())
+        social = (project / '.claude/skills/social-images/scripts/social.ts').read_text()
+        self.assertIn("default: '../output/charts/build'", social)
         example = (charts / 'src/charts/example/Chart.svelte').read_text()
         self.assertIn("from '@samizdata/mozaic/frame'", example)
         self.assertNotIn("from 'mozaic/", example)

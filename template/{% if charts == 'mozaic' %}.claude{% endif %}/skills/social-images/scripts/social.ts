@@ -1,7 +1,7 @@
 // Images of the charts for social media, after `pnpm build`. Run from charts/: `pnpm social [slug…]`.
 // For the outlet's own posts only: nothing about it is part of the embeds.
 //
-// Each chart is rendered from its embed page in build/ and fitted into each format at its exact size in
+// Each chart is rendered from its embed page in ../output/charts/build/ and fitted into each format at its exact size in
 // pixels. The chart's width (and so its layout, which changes at the breakpoints) is picked to fill the
 // format best: the chart is drawn as large as fits inside the margins, and among the widths, the one that
 // balances large type against empty space wins (scale × √share of the space filled). A width set for a
@@ -48,7 +48,7 @@ const { values: opts, positionals } = parseArgs({
 		formats: { type: 'string', default: Object.keys(FORMATS).join(',') },
 		locales: { type: 'string' },
 		width: { type: 'string' },
-		dir: { type: 'string', default: 'build' },
+		dir: { type: 'string', default: '../output/charts/build' },
 		out: { type: 'string', default: '../output/social' },
 		story: { type: 'string', default: '../docs' },
 		browser: { type: 'string' },
