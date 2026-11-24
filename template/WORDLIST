@@ -1,0 +1,2 @@
+# Words the spell checker should accept, one per line. A lowercase entry also accepts
+# capitalised forms (covid accepts Covid); anything else must match exactly.

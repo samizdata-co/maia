@@ -9,6 +9,13 @@
 {% elif notebook == 'Observable' %}To build the Observable Notebook run `npm run dev` to preview or `npm run build` to build it to the `output` directory.
 {% endif %}
 
+## Spell checking
+
+Every `quarto render` and `quarto preview` checks the prose of each document with [Hunspell](https://hunspell.github.io/) (install it with `sudo apt install hunspell` or `brew install hunspell`) and lists possible mistakes with their line and suggestions. Text is checked in the project's `lang` ({{ 'Romanian' if outlet == 'zdg' else 'British English, -ise spellings' }}); mark a passage in the other language with `[…]{lang={{ 'en-GB' if outlet == 'zdg' else 'ro' }}}`, or one to skip with `[…]{.nospell}`. Code, maths, citations, URLs and acronyms are not checked.
+
+- Add names and other correct words to `WORDLIST`, one per line.
+- In a document's YAML, `spellcheck: {ignore: [word, word]}` accepts words in that document, `spellcheck: {fail: true}` stops the render while there are possible mistakes, and `spellcheck: false` turns the check off.
+
 {% if outlet == 'samizdata' -%}
 ## SAMIZDATA report styling
 

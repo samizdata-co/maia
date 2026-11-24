@@ -1,0 +1,8 @@
+title: Spellcheck
+author: SAMIZDATA
+version: 0.1.0
+quarto-required: ">=1.8.20"
+contributes:
+  filters:
+    - path: spellcheck.lua
+      at: pre-quarto

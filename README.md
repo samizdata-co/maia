@@ -38,6 +38,10 @@ The SAMIZDATA extension is pinned at [`samizdata-co/brand@v0.1.0`](https://githu
 
 To add an outlet, create its brand repository (with `_brand.yml`, a Quarto extension and `datavis/mozaic/`), add it to the `outlet` choices in `copier.yml`, and vendor its files under conditional names (`{% if outlet == '<name>' %}…{% endif %}`) like the existing two.
 
+## Spell checking
+
+Every project includes `_extensions/maia/spellcheck`, a Lua filter that `_quarto.yml` runs on each render and preview. It pipes the prose of each document to Hunspell (which must be installed; without it the filter warns and the render carries on) and prints `file:line:column` warnings with suggestions. It checks in the project's `lang` (`ro` for Ziarul de Gardă, `en-GB` otherwise), switching for `[…]{lang=…}` spans and divs. The dictionaries are vendored from [LibreOffice/dictionaries](https://github.com/LibreOffice/dictionaries): Marco Pinto's en_GB (-ise) and rospell's ro_RO 3.3.10, with their licences next to them. Projects accept extra words through `WORDLIST`. To update a dictionary, copy the new `.aff` and `.dic` over the ones in `template/_extensions/maia/spellcheck/dictionaries/` and run the tests (`test_spellcheck_warns_about_mistakes` renders a document when `quarto` and `hunspell` are installed).
+
 ## Charts
 
 `charts: mozaic` adds a `charts/` folder with [mozaic](https://github.com/samizdata-co/mozaic) charts built as static embeds, a preview page and print export, plus Claude Code skills for building charts, for cover images (an FT-style collage of a photo and the story's data lines, `.claude/skills/cover-image`) and for social media images of the charts (`pnpm social`: PNGs of the story's charts at Instagram, story, Bluesky/X and link-post sizes in `output/social/`, `.claude/skills/social-images`). Its house style is the outlet's mozaic theme, copied from the brand's `datavis/mozaic/` folder into `charts/src/lib/brands/<outlet>/` (mozaic's neutral `base` for no outlet). `chart_locales` sets the chart languages (ZdG defaults to `ro`, the others to `en`). The charts install mozaic from npm (`@samizdata/mozaic`), at the version in `mozaic_version` in `copier.yml`. With `--trust`, Copier runs `pnpm install` in `charts/`.
@@ -72,6 +76,8 @@ Here's the current folder structure.
 ├── output                              # publishable notebooks, dashboards, charts, stories, etc.
 ├── charts                              # (mozaic) charts: src/charts/, data/, preview and embeds
 ├── _extensions/<org>/<outlet>          # pinned Quarto brand of the outlet
+├── _extensions/maia/spellcheck        # spell check on render, with en_GB and ro_RO dictionaries
+├── WORDLIST                            # words the spell check accepts
 ├── fonts                               # (SAMIZDATA) offline PDF copies of brand fonts
 ├── _quarto.yml                         # Quarto config
 ├── .gitignore                          # files to be ignored by version control

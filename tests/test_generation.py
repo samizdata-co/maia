@@ -127,12 +127,46 @@ class GenerationTests(unittest.TestCase):
 
     def test_project_without_outlet_has_no_brand(self):
         project = self.generate('outlet=none')
-        self.assertFalse((project / '_extensions').exists())
+        self.assertEqual([p.name for p in (project / '_extensions').iterdir()], ['maia'])
         self.assertFalse((project / 'fonts').exists())
         self.assertEqual(sorted(p.name for p in project.glob('*.tex')), [])
         quarto = (project / '_quarto.yml').read_text()
         self.assertNotIn('include-in-header', quarto)
         self.assertNotIn('report styling', (project / 'README.md').read_text())
+
+    def test_every_project_spellchecks_in_the_outlet_language(self):
+        for outlet, lang in [('samizdata', 'en-GB'), ('zdg', 'ro'), ('none', 'en-GB')]:
+            with self.subTest(outlet=outlet):
+                project = self.generate(f'outlet={outlet}')
+                extension = project / '_extensions/maia/spellcheck'
+                self.assertTrue((extension / 'spellcheck.lua').is_file())
+                for name in ['en_GB.aff', 'en_GB.dic', 'ro_RO.aff', 'ro_RO.dic']:
+                    self.assertTrue((extension / 'dictionaries' / name).is_file())
+                self.assertTrue((project / 'WORDLIST').is_file())
+                quarto = (project / '_quarto.yml').read_text()
+                self.assertIn(f'lang: {lang}\n', quarto)
+                self.assertIn('filters:\n  - spellcheck\n', quarto)
+
+    @unittest.skipUnless(shutil.which('quarto') and shutil.which('hunspell'), 'needs quarto and hunspell')
+    def test_spellcheck_warns_about_mistakes(self):
+        project = self.generate()
+        (project / 'WORDLIST').write_text('Iohannis\n')
+        (project / 'docs/check.md').write_text(
+            '---\ntitle: Check\nformat: html\n---\n\n'
+            'We realise the wrold is big, says NATO. `codeword` and Iohannis are fine.\n\n'
+            '[Am văzut ştiinţa și stiinta.]{lang=ro}\n'
+        )
+        result = subprocess.run(
+            ['quarto', 'render', 'docs/check.md'], cwd=project, capture_output=True, text=True,
+        )
+        output = result.stdout + result.stderr
+        self.assertEqual(result.returncode, 0, output)
+        self.assertIn('3 possible spelling mistakes in docs/check.md', output)
+        self.assertIn('docs/check.md:6:16  wrold → world', output)
+        self.assertIn('ştiinţa → știința', output)
+        self.assertIn('stiinta → știința', output)
+        for accepted in ['realise', 'NATO', 'codeword', 'Iohannis']:
+            self.assertNotIn(f'  {accepted} ', output)
 
     def test_plain_project_has_no_charts(self):
         project = self.generate()

@@ -9,6 +9,13 @@ project:
 execute:
   cache: true
 
+lang: {{ 'ro' if outlet == 'zdg' else 'en-GB' }}
+
+# Warns about possible spelling mistakes on every render (_extensions/maia/spellcheck).
+# Add correct words to WORDLIST; turn it off in a document with `spellcheck: false`.
+filters:
+  - spellcheck
+
 format:
   html:
     theme:
