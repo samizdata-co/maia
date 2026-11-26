@@ -83,6 +83,13 @@ mozaic_version:
   default: "0.16.0"
   when: false
 
+# Where ZdG charts are hosted: one Worker serving every story at <grafice_url><project_slug>/,
+# deployed from the grafice repo (a sibling of the project) by `pnpm upload` in charts/. Not asked.
+grafice_url:
+  type: str
+  default: "https://grafice.small-snow-7371.workers.dev/"
+  when: false
+
 # A local mozaic checkout to link instead of npm, for developing the library from a project.
 # Not asked; pass it with `--data mozaic_path=/absolute/path/to/mozaic`.
 mozaic_path:

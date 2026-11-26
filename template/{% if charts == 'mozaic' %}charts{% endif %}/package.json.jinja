@@ -9,7 +9,8 @@
 		"preview": "vite preview",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"export": "mozaic export ../output/charts/build --out ../output/charts/exports",
-		"social": "node ../.claude/skills/social-images/scripts/social.ts",
+		"social": "node ../.claude/skills/social-images/scripts/social.ts",{% if outlet == 'zdg' %}
+		"upload": "pnpm build && node \"${GRAFICE_DIR:-../../grafice}/scripts/publish.ts\" {{ project_slug }} ../output/charts/build",{% endif %}
 		"prepare": "svelte-kit sync || echo ''"
 	},
 	"dependencies": {

@@ -17,6 +17,10 @@ Languages: see `mozaic.config.ts`.
 - Publishing: `pnpm build` writes static embeds to `../output/charts/build/` (next to the rendered docs in
   `output/`), to upload to any static host, and `pnpm export` writes print files to `../output/charts/exports/`.
   Set `baseUrl` in `mozaic.config.ts` to its public URL.
+{%- if outlet == 'zdg' %}
+- ZdG charts are hosted together at `{{ grafice_url }}`: `pnpm upload` builds them and publishes them to
+  `{{ grafice_url }}{{ project_slug }}/` (the `baseUrl`) through the sibling `grafice` repo. Run it only when asked.
+{%- endif %}
 - Embeds are iframes. A web component embed (`<mozaic-chart>`, `defineChartElements()` and `elementConfig()`
   from mozaic) is optional: add it only when asked, for a CMS that allows scripts (see the mozaic-chart skill).
 {%- if mozaic_path %}

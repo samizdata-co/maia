@@ -206,6 +206,14 @@ class GenerationTests(unittest.TestCase):
         config = (charts / 'mozaic.config.ts').read_text()
         self.assertIn("project: 'plain-test'", config)
         self.assertIn("locales: ['ro'] as LocaleCode[]", config)
+        # ZdG charts publish to the shared grafice Worker, each project under its slug.
+        grafice = self.copier_default('grafice_url')
+        self.assertIn(f"baseUrl: '{grafice}plain-test/'", config)
+        self.assertEqual(
+            package['scripts']['upload'],
+            'pnpm build && node "${GRAFICE_DIR:-../../grafice}/scripts/publish.ts" plain-test ../output/charts/build',
+        )
+        self.assertIn(f'{grafice}plain-test/', (project / 'README.md').read_text())
         self.assertTrue((charts / 'data/example.csv').is_file())
         self.assertTrue((charts / 'src/charts/example/Chart.svelte').is_file())
         self.assertTrue((charts / 'src/routes/embed/[chart]/[locale]/+page.svelte').is_file())
@@ -252,7 +260,11 @@ class GenerationTests(unittest.TestCase):
         theme = (charts / 'src/lib/theme.ts').read_text()
         self.assertIn("extendTheme({ name: 'plain-test', label: 'Generated Test' })", theme)
         self.assertFalse((charts / 'src/lib/brands').exists())
-        self.assertIn("locales: ['en', 'ro']", (charts / 'mozaic.config.ts').read_text())
+        config = (charts / 'mozaic.config.ts').read_text()
+        self.assertIn("locales: ['en', 'ro']", config)
+        # Only ZdG charts go to the grafice Worker.
+        self.assertIn("baseUrl: ''", config)
+        self.assertNotIn('upload', json.loads((charts / 'package.json').read_text())['scripts'])
 
     def test_invalid_chart_locale_is_rejected(self):
         result = self.generate('charts=mozaic', 'chart_locales=en,fr', check=False)

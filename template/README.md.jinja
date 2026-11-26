@@ -47,7 +47,11 @@ Write the data each chart needs to `charts/data/` (committed; `data/processed/` 
 
 ### Publishing charts
 
+{% if outlet == 'zdg' -%}
+`pnpm upload` in `charts/` builds the charts and publishes them at <{{ grafice_url }}{{ project_slug }}/>, the Worker that serves every ZdG story's charts. It needs the [`grafice`](https://github.com/ziaruldegarda/grafice) repo cloned next to this project (or `GRAFICE_DIR` set to its path, with `pnpm install` run there once): its `scripts/publish.ts` copies `output/charts/build/` to `public/{{ project_slug }}/`, deploys with `cf deploy` and commits. `baseUrl` in `charts/mozaic.config.ts` is already that address, so the preview page there shows the embed codes to paste into the article. Each chart is at `embed/<slug>/<locale>/`; its embed code is an iframe plus `embed.js`, which resizes the iframe to fit the chart.
+{%- else -%}
 `pnpm build` in `charts/` writes the charts as static files to `output/charts/build/`, next to the rendered docs in `output/`; upload that folder (or all of `output/`) to any static host. Set `baseUrl` in `charts/mozaic.config.ts` to the public URL, so the preview page shows the right embed codes. Each chart is at `embed/<slug>/<locale>/`; its embed code is an iframe plus `embed.js`, which resizes the iframe to fit the chart.
+{%- endif %}
 {% endif %}
 ## Tracking time
 
