@@ -125,6 +125,34 @@ class GenerationTests(unittest.TestCase):
         self.assertFalse((project / 'samizdata-pdf.tex').exists())
         self.assertIn('Ziarul de Gardă report styling', (project / 'README.md').read_text())
 
+    def test_zdg_project_has_the_article_skill(self):
+        project = self.generate('outlet=zdg')
+        skill = project / '.claude/skills/zdg-article'
+        self.assertIn('name: zdg-article', (skill / 'SKILL.md').read_text())
+        self.assertTrue((skill / 'scripts/zdg_search.py').is_file())
+        # Without mozaic charts, the ZdG skill is the only one.
+        self.assertEqual([p.name for p in (project / '.claude/skills').iterdir()], ['zdg-article'])
+        story = project / 'docs/check.md'
+        story.write_text(
+            '---\ntitle: "Titlu"\n---\n\n**Un [șapou](https://www.zdg.md/x/) scurt.**\n\n'
+            '<!-- SURSĂ? nu se numără -->\n\n## Cât?\n\nText de 20 de caractere\n\n'
+            '::: {.content-hidden when-format="pdf"}\n![](../output/charts/exports/a/zdg-ro/web.png){fig-alt="Alt"}\n:::\n',
+        )
+        result = subprocess.run(
+            ['python3', str(skill / 'scripts/count_chars.py'), str(story), '--json'],
+            capture_output=True, text=True,
+        )
+        self.assertEqual(result.returncode, 0, result.stderr)
+        count = json.loads(result.stdout)
+        # "Un șapou scurt." (15) + "Cât?" (4) + "Text de 20 de caractere" (23)
+        self.assertEqual(count['characters'], 42)
+        self.assertEqual([s['characters'] for s in count['sections']], [15, 27])
+
+    def test_other_outlets_have_no_zdg_skill(self):
+        project = self.generate('outlet=samizdata', 'charts=mozaic')
+        self.assertFalse((project / '.claude/skills/zdg-article').exists())
+        self.assertTrue((project / '.claude/skills/mozaic-chart/SKILL.md').is_file())
+
     def test_project_without_outlet_has_no_brand(self):
         project = self.generate('outlet=none')
         self.assertEqual([p.name for p in (project / '_extensions').iterdir()], ['maia'])
