@@ -36,6 +36,8 @@ The `outlet` question picks the brand for reports and charts: **SAMIZDATA** (the
 
 The SAMIZDATA extension is pinned at [`samizdata-co/brand@v0.1.0`](https://github.com/samizdata-co/brand/tree/v0.1.0). Update an extension deliberately by running `quarto update extension samizdata-co/brand@<tag>` (or `ziaruldegarda/brand@<tag>`) inside `template/` and moving the result into the outlet's conditional folder, then regenerate and test a project before committing.
 
+The skills in `template/…/.claude/skills/` are their only source; `copier.yml`'s `_exclude` decides which ones a project gets. To bring an existing project's skills up to date, run `gh skill install samizdata-co/maia <skill> --agent claude-code --force` in it once (this records the source), then `gh skill update --all`.
+
 To add an outlet, create its brand repository (with `_brand.yml`, a Quarto extension and `datavis/mozaic/`), add it to the `outlet` choices in `copier.yml`, and vendor its files under conditional names (`{% if outlet == '<name>' %}…{% endif %}`) like the existing two.
 
 ## Spell checking

@@ -1,6 +1,18 @@
 _min_copier_version: "9.5"
 _subdirectory: template
 _templates_suffix: .jinja
+# Skill folders keep their plain names so `gh skill` can install them from
+# this repo; these patterns decide which ones a project gets.
+_exclude:
+  - "~*"
+  - "*.py[co]"
+  - "__pycache__"
+  - ".git"
+  - ".DS_Store"
+  - "{% if charts != 'mozaic' %}.claude/skills/cover-image{% endif %}"
+  - "{% if charts != 'mozaic' %}.claude/skills/mozaic-chart{% endif %}"
+  - "{% if charts != 'mozaic' %}.claude/skills/social-images{% endif %}"
+  - "{% if outlet != 'zdg' %}.claude/skills/zdg-article{% endif %}"
 
 project_name:
   type: str
