@@ -59,6 +59,9 @@ Languages: see `mozaic.config.ts`.
   `<AxisX unit="€ a year" />` (last labelled tick); recipes take `unit` / `xUnit` / `yUnit`.
 - Tooltips: `<Tooltip title items>`, one item per series (label, value, colour), so values line up.
 - Event markers on a time axis: `<RefLine x={date} label="…" dotted labelY={-30} />`, labels above the plot.
+- Leave line colours, widths and dashes of gridlines, axes, `RefLine`, `Arrow` and `Callout` to the
+  theme: in print it makes them darker and heavier so they survive newsprint, and a `stroke` or
+  `dash` set in the chart overrides that.
 - Link each source to its data or document: `<Source sources={[{ label: 'ANRE', href: '…' }, …]} />`
   (recipes take the same list as `source`).
 - No `<DataTable>` ("Show the data" button) unless asked for.
